@@ -103,12 +103,12 @@
             to   { transform:translateY(-115vh) rotate(-2deg); opacity:0;  }
         }
 
-        /* ===== HEADER ===== */
+        /* ===== HEADER (inside left column) ===== */
         .header {
             position: relative; z-index: 2;
-            width: 100%; max-width: 700px;
+            width: 100%;
             text-align: center;
-            padding: 18px 20px 0;
+            padding: 0;
         }
 
         /* --- "สหกรุ๊ป" --- */
@@ -257,7 +257,7 @@
         /* ===== WHEEL AREA ===== */
         .wheel-wrap {
             position: relative; z-index: 2;
-            margin: 18px auto 0;
+            margin: 0 auto;
             display: flex; align-items: center; justify-content: center;
         }
         .outer-ring {
@@ -300,7 +300,7 @@
         /* ===== SPIN BUTTON ===== */
         .btn-area {
             position:relative; z-index:2;
-            margin-top:22px;
+            margin-top:16px;
             display:flex; flex-direction:column; align-items:center; gap:10px;
         }
         #spinBtn {
@@ -376,6 +376,45 @@
         }
         .result-close:hover { transform:translateY(-2px); }
 
+        /* ===== 2-COLUMN LAYOUT ===== */
+        .main-layout {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 100%;
+            min-height: 100vh;
+            padding: 10px 24px;
+            gap: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .col-left {
+            flex: 0 0 46%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 16px;
+        }
+
+        .col-right {
+            flex: 0 0 54%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 16px;
+        }
+
+        /* Header sits inside left column — remove old centering */
+        .header {
+            width: 100%;
+            max-width: 100%;
+            padding: 0;
+            text-align: center;
+        }
+
         /* ===== CONFETTI ===== */
         .confetti-piece {
             position:fixed; top:-14px; pointer-events:none;
@@ -401,47 +440,45 @@
 <div class="balloon b5"></div>
 <div class="balloon b6"></div>
 
-<!-- ===== HEADER ===== -->
-<div class="header">
+<div class="main-layout">
 
-    <!-- "สหกรุ๊ป" giant italic red -->
-    <span class="title-main">สหกรุ๊ป</span>
-
-    <!-- "แฟร์&เฟส" + "ครั้งที่ 30" circle -->
-    <div class="sub-row">
-        <span class="title-sub">แฟร์&amp;เฟส</span>
-        <span class="badge-30">ครั้ง<br>ที่&nbsp;30</span>
-    </div>
-
-    <!-- "ไปด้วยกันนะ"  +  date circle (same row, poster-style) -->
-    <div class="middle-row">
-        <span class="tagline">ไปด้วยกันนะ</span>
-        <div class="date-circle">
-            <div class="date-num">25–28</div>
-            <div class="date-month">มิ.ย. 69</div>
-            <div class="date-venue">ไบเทค บางนา<br>ฮอลล์ 98–100</div>
+    <!-- ===== LEFT: ข้อความ ===== -->
+    <div class="col-left">
+        <div class="header">
+            <span class="title-main">สหกรุ๊ป</span>
+            <div class="sub-row">
+                <span class="title-sub">แฟร์&amp;เฟส</span>
+                <span class="badge-30">ครั้ง<br>ที่&nbsp;30</span>
+            </div>
+            <div class="middle-row">
+                <span class="tagline">ไปด้วยกันนะ</span>
+                <div class="date-circle">
+                    <div class="date-num">25–28</div>
+                    <div class="date-month">มิ.ย. 69</div>
+                    <div class="date-venue">ไบเทค บางนา<br>ฮอลล์ 98–100</div>
+                </div>
+            </div>
+            <div class="wheel-title">🎡&ensp;วงล้อโชคดี&ensp;·&ensp;Lucky Wheel&ensp;🎡</div>
         </div>
     </div>
 
-    <!-- Wheel label -->
-    <div class="wheel-title">🎡&ensp;วงล้อโชคดี&ensp;·&ensp;Lucky Wheel&ensp;🎡</div>
-</div>
-
-<!-- ===== WHEEL ===== -->
-<div class="wheel-wrap" id="wheelWrap">
-    <div class="outer-ring"  id="outerRing"></div>
-    <div class="lights-ring" id="lightsRing"></div>
-    <div class="pointer-wrap">
-        <div class="pointer-head"></div>
-        <div class="pointer-base"></div>
+    <!-- ===== RIGHT: วงล้อ ===== -->
+    <div class="col-right">
+        <div class="wheel-wrap" id="wheelWrap">
+            <div class="outer-ring"  id="outerRing"></div>
+            <div class="lights-ring" id="lightsRing"></div>
+            <div class="pointer-wrap">
+                <div class="pointer-head"></div>
+                <div class="pointer-base"></div>
+            </div>
+            <canvas id="wheelCanvas"></canvas>
+        </div>
+        <div class="btn-area">
+            <button id="spinBtn" onclick="spin()">หมุนเลย!&ensp;🎯</button>
+            <div id="spinCount">หมุนไปแล้ว: <span id="countNum">0</span> ครั้ง</div>
+        </div>
     </div>
-    <canvas id="wheelCanvas"></canvas>
-</div>
 
-<!-- ===== SPIN BUTTON ===== -->
-<div class="btn-area">
-    <button id="spinBtn" onclick="spin()">หมุนเลย!&ensp;🎯</button>
-    <div id="spinCount">หมุนไปแล้ว: <span id="countNum">0</span> ครั้ง</div>
 </div>
 
 <!-- ===== RESULT MODAL ===== -->
@@ -473,8 +510,12 @@ const segments  = SEG_ORDER.map(i => BRANDS[i]);
 const N   = segments.length;
 const ARC = (2 * Math.PI) / N;
 
-/* Canvas */
-const SIZE = Math.min(window.innerWidth - 40, 540);
+/* Canvas — fit inside right column (54% of viewport, capped by height) */
+const SIZE = Math.min(
+    Math.floor(window.innerWidth * 0.50) - 60,
+    Math.floor(window.innerHeight * 0.82),
+    520
+);
 const canvas = document.getElementById('wheelCanvas');
 canvas.width = canvas.height = SIZE;
 const ctx = canvas.getContext('2d');
