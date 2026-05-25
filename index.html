@@ -82,7 +82,7 @@
         .mascot {
             position: fixed;
             pointer-events: none;
-            z-index: 0;
+            z-index: 3;   /* in FRONT of main layout so always visible */
             animation: mascotFloat ease-in-out infinite;
         }
         @keyframes mascotFloat {
@@ -91,13 +91,13 @@
             60%     { transform: translateY(-26px)  rotate(1.4deg);  }
             80%     { transform: translateY(-14px)  rotate(-0.3deg); }
         }
-        /* Main flanking mascots — most visible at left/right edges */
-        .m1 { bottom:0; left:-12px;  width:clamp(115px,14vw,210px); animation-duration:4.3s; animation-delay:0s;    opacity:.88; }
-        .m2 { bottom:0; right:-12px; width:clamp(110px,13vw,195px); animation-duration:5.2s; animation-delay:1.4s;  opacity:.84; }
-        /* Interior mascots — slightly transparent, peek behind content */
-        .m3 { bottom:0; left:18%;    width:clamp(68px, 8vw,125px);  animation-duration:3.9s; animation-delay:2.3s;  opacity:.48; }
-        .m4 { bottom:0; right:18%;   width:clamp(72px, 9vw,135px);  animation-duration:4.6s; animation-delay:0.8s;  opacity:.50; }
-        .m5 { bottom:0; left:44%;    width:clamp(60px, 7vw,110px);  animation-duration:3.5s; animation-delay:1.9s;  opacity:.40; }
+        /* Left & right flanking — large, clearly visible */
+        .m1 { bottom:-8px; left:-8px;  width:clamp(130px,15vw,220px); animation-duration:4.3s; animation-delay:0s;   opacity:.92; }
+        .m2 { bottom:-8px; right:-8px; width:clamp(120px,14vw,205px); animation-duration:5.0s; animation-delay:1.4s; opacity:.88; }
+        /* Inner accent mascots — inside left column, not covering wheel */
+        .m3 { bottom:-8px; left:7%;    width:clamp(75px, 9vw,138px);  animation-duration:3.9s; animation-delay:2.1s; opacity:.75; }
+        .m4 { bottom:-8px; right:7%;   width:clamp(78px, 9vw,142px);  animation-duration:4.6s; animation-delay:0.9s; opacity:.72; }
+        .m5 { bottom:-8px; left:38%;   width:clamp(65px, 7vw,112px);  animation-duration:3.5s; animation-delay:1.8s; opacity:.60; }
 
         /* ===== HEADER (inside left column) ===== */
         .header {
@@ -244,11 +244,19 @@
             border: clamp(2px,.5vw,3px) solid rgba(255,255,255,.38);
             position: relative; z-index: 2;
         }
+        /* White pill wraps the SVG so it shows on any background color */
+        .hisher-wrap {
+            background: rgba(255,255,255,.95);
+            border-radius: 8px;
+            padding: 4px 10px;
+            display: inline-flex;
+            align-items: center;
+            line-height: 0;
+        }
         .hisher-logo {
-            height: clamp(26px, 3.8vw, 46px);
+            height: clamp(22px, 3.2vw, 40px);
             width: auto;
-            /* invert to white so SVG/dark logo shows on red background */
-            filter: brightness(0) invert(1);
+            display: block;
         }
         .lucky-spin-text {
             font-family: 'Kanit', sans-serif;
@@ -469,7 +477,9 @@
 
         <!-- Game title above the wheel -->
         <div class="wheel-game-title">
-            <img src="hisher.svg" alt="His&Her Plus Point" class="hisher-logo">
+            <span class="hisher-wrap">
+                <img src="hisher.svg" alt="His&Her Plus Point" class="hisher-logo">
+            </span>
             <span class="lucky-spin-text">Lucky Spin</span>
         </div>
 
@@ -612,10 +622,10 @@ function drawWheel() {
         ctx.lineWidth   = 1.5; ctx.stroke();
 
         /* product image — large & clear, no circle clip */
-        const lr     = R * 0.62;
+        const lr     = R * 0.65;
         const lx     = CX + lr * Math.cos(mid);
         const ly     = CY + lr * Math.sin(mid);
-        const logoSz = SIZE * 0.20;   // bigger than old logo size
+        const logoSz = SIZE * 0.28;   // much larger, fills segment well
 
         ctx.save();
         ctx.translate(lx, ly);
