@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สหกรุ๊ปแฟร์&เฟส ครั้งที่ 30 – Lucky Spin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,700;0,900;1,700;1,900&family=Sriracha&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            background: linear-gradient(180deg,
+                #e8f7ff 0%,#b8e8ff 15%,#5ec4f5 40%,#7fd4f8 70%,#c8eeff 100%);
+            min-height:100vh;
+            display:flex; flex-direction:column; align-items:center;
+            font-family:'Kanit',sans-serif;
+            overflow-x:hidden;
+            position:relative;
+        }
+
+        /* ── Sun ── */
+        .sun {
+            position:fixed; top:-80px; right:-80px;
+            width:260px; height:260px;
+            background:radial-gradient(circle,#fffcb0 0%,#ffe040 35%,rgba(255,220,0,0) 68%);
+            border-radius:50%; animation:sun-pulse 4s ease-in-out infinite;
+            pointer-events:none; z-index:0;
+        }
+        @keyframes sun-pulse{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.1);opacity:1}}
+
+        /* ── Clouds ── */
+        .cloud{position:fixed;background:#fff;border-radius:60px;pointer-events:none;z-index:0;}
+        .cloud::before,.cloud::after{content:'';position:absolute;background:#fff;border-radius:50%;}
+        .c1{width:180px;height:55px;top:50px;left:-40px;opacity:.9;animation:drift 20s linear infinite;}
+        .c1::before{width:90px;height:90px;top:-46px;left:22px;}.c1::after{width:65px;height:65px;top:-32px;left:78px;}
+        .c2{width:140px;height:46px;top:110px;right:-60px;opacity:.75;animation:drift 28s linear infinite reverse;}
+        .c2::before{width:70px;height:70px;top:-36px;left:18px;}.c2::after{width:52px;height:52px;top:-26px;left:60px;}
+        .c3{width:220px;height:68px;top:14px;left:42%;opacity:.6;animation:drift 34s linear infinite;}
+        .c3::before{width:100px;height:100px;top:-54px;left:28px;}.c3::after{width:76px;height:76px;top:-42px;left:100px;}
+        .c4{width:110px;height:36px;top:80px;left:60%;opacity:.55;animation:drift 22s linear infinite reverse;}
+        .c4::before{width:55px;height:55px;top:-28px;left:14px;}.c4::after{width:40px;height:40px;top:-20px;left:48px;}
+        @keyframes drift{from{transform:translateX(-130%)}to{transform:translateX(120vw)}}
+
+        /* ══════════════════════════════════════════════
+           2-COLUMN LAYOUT
+        ══════════════════════════════════════════════ */
+        .main-layout {
+            display:flex; flex-direction:row; align-items:center;
+            width:100%; min-height:100vh;
+            padding:10px 18px; gap:0;
+            position:relative; z-index:2;
+        }
+        .col-left {
+            flex:0 0 42%;
+            display:flex; flex-direction:column; align-items:center; justify-content:center;
+            padding:10px 12px;
+        }
+        .col-right {
+            flex:0 0 58%;
+            display:flex; flex-direction:column; align-items:center; justify-content:center;
+            padding:10px 10px;
+        }
+
+        /* ══════════════════════════════════════════════
+           LEFT COLUMN CONTENT
+        ══════════════════════════════════════════════ */
+
+        /* PRIMARY: Lucky Spin game title */
+        .game-title-bar {
+            display:inline-flex; align-items:center; justify-content:center;
+            gap:clamp(8px,1.4vw,16px);
+            background:linear-gradient(135deg,#ff5030,#C9200A);
+            padding:clamp(9px,1.6vw,16px) clamp(22px,4vw,52px);
+            border-radius:50px;
+            box-shadow:0 5px 0 rgba(120,14,0,.55),0 8px 22px rgba(220,30,0,.4);
+            border:clamp(2px,.5vw,3px) solid rgba(255,255,255,.38);
+            margin-bottom:clamp(8px,1.4vw,16px);
+        }
+        .hw-wrap {
+            background:rgba(255,255,255,.95);
+            border-radius:8px; padding:4px 10px;
+            display:inline-flex; align-items:center; line-height:0;
+        }
+        .hw-wrap img {
+            height:clamp(24px,3.4vw,44px); width:auto; display:block;
+        }
+        .lucky-spin-text {
+            font-family:'Kanit',sans-serif; font-weight:900; font-style:italic;
+            font-size:clamp(1.4em,3.2vw,2.6em);
+            color:#fff; letter-spacing:3px;
+            text-shadow:0 2px 6px rgba(0,0,0,.28);
+        }
+
+        /* SECONDARY: Event name */
+        .ev-header { width:100%; text-align:center; }
+        .title-main {
+            display:block;
+            font-family:'Kanit',sans-serif; font-weight:900; font-style:italic;
+            font-size:clamp(3em,9vw,5.8em); line-height:.9;
+            color:#E31D0C;
+            -webkit-text-stroke:clamp(2px,.7vw,5px) #fff;
+            paint-order:stroke fill;
+            filter:drop-shadow(0 5px 10px rgba(200,20,0,.26));
+            letter-spacing:-1px;
+        }
+        .sub-row {
+            display:flex; align-items:center; justify-content:center;
+            gap:clamp(5px,1.5vw,12px);
+            margin-top:clamp(-8px,-1.5vw,-4px);
+        }
+        .title-sub {
+            font-family:'Kanit',sans-serif; font-weight:900; font-style:italic;
+            font-size:clamp(1.9em,6vw,3.8em); line-height:1;
+            color:#E31D0C;
+            -webkit-text-stroke:clamp(1.5px,.5vw,3.5px) #fff;
+            paint-order:stroke fill;
+        }
+        .badge-30 {
+            flex-shrink:0; display:inline-flex; flex-direction:column;
+            align-items:center; justify-content:center;
+            width:clamp(52px,9vw,76px); height:clamp(52px,9vw,76px);
+            border-radius:50%;
+            background:radial-gradient(circle at 38% 32%,#ff4c2a,#C9200A 65%);
+            border:clamp(2px,.45vw,3.5px) solid #fff;
+            box-shadow:0 3px 0 rgba(130,15,0,.55),0 5px 14px rgba(220,30,0,.4);
+            font-family:'Kanit',sans-serif; font-weight:900; color:#fff;
+            font-size:clamp(.52em,1.3vw,.78em); line-height:1.25;
+        }
+        .middle-row {
+            display:flex; align-items:center; justify-content:center;
+            gap:clamp(8px,2.5vw,22px);
+            margin-top:clamp(4px,1vw,9px); flex-wrap:wrap;
+        }
+        .tagline {
+            font-family:'Sriracha',cursive; font-style:italic;
+            font-size:clamp(1.4em,4.2vw,2.9em); font-weight:400;
+            color:#1a1a1a; position:relative; line-height:1;
+            text-shadow:1px 1px 0 rgba(255,255,255,.7);
+        }
+        .tagline::before {
+            content:''; position:absolute;
+            bottom:-5px; left:-2%; width:104%; height:clamp(3px,.8vw,6px);
+            background:#E86020; border-radius:4px; transform:rotate(-1.5deg);
+        }
+        .tagline::after {
+            content:''; position:absolute;
+            bottom:-11px; left:3%; width:96%; height:clamp(2.5px,.6vw,4.5px);
+            background:#E86020; border-radius:3px; transform:rotate(-1deg); opacity:.7;
+        }
+        .date-circle {
+            flex-shrink:0; display:flex; flex-direction:column;
+            align-items:center; justify-content:center;
+            width:clamp(82px,14vw,124px); height:clamp(82px,14vw,124px);
+            border-radius:50%;
+            background:radial-gradient(circle at 38% 30%,#ff5030,#C9200A 70%);
+            border:clamp(2px,.4vw,3.5px) solid rgba(255,255,255,.5);
+            box-shadow:0 4px 0 rgba(130,15,0,.5),0 6px 18px rgba(220,30,0,.4);
+            color:#fff; font-family:'Kanit',sans-serif; line-height:1.18;
+            padding:5px; text-align:center;
+        }
+        .date-num   {font-size:clamp(1.2em,3.2vw,2em);   font-weight:900; line-height:1;}
+        .date-month {font-size:clamp(.64em,1.5vw,.94em);  font-weight:700;}
+        .date-venue {font-size:clamp(.5em, 1.2vw,.76em);  font-weight:700; opacity:.92; line-height:1.15;}
+
+        /* ── Mascots row – invite/wave animation ── */
+        .mascot-row {
+            display:flex; align-items:flex-end; justify-content:center;
+            gap:clamp(2px,.6vw,8px);
+            width:100%;
+            margin-top:clamp(12px,1.8vw,20px);
+            overflow:visible;
+        }
+        .mascot-row img {
+            height:clamp(68px,9.5vw,148px); width:auto;
+            animation:mascotInvite ease-in-out infinite;
+            pointer-events:none;
+            transform-origin:bottom center;
+        }
+        /* staggered delays per mascot */
+        .mascot-row img:nth-child(1){animation-duration:2.1s;animation-delay:0s;}
+        .mascot-row img:nth-child(2){animation-duration:2.4s;animation-delay:0.35s;}
+        .mascot-row img:nth-child(3){animation-duration:2.0s;animation-delay:0.70s;}
+        .mascot-row img:nth-child(4){animation-duration:2.3s;animation-delay:1.05s;}
+        .mascot-row img:nth-child(5){animation-duration:2.2s;animation-delay:1.40s;}
+        /* beckoning / invite animation */
+        @keyframes mascotInvite {
+            0%   {transform:rotate(-7deg) translateY(0px);   }
+            18%  {transform:rotate( 6deg) translateY(-13px); }
+            38%  {transform:rotate(-4deg) translateY(-8px);  }
+            58%  {transform:rotate( 7deg) translateY(-16px); }
+            78%  {transform:rotate(-3deg) translateY(-6px);  }
+            100% {transform:rotate(-7deg) translateY(0px);   }
+        }
+
+        /* ══════════════════════════════════════════════
+           RIGHT COLUMN – WHEEL
+        ══════════════════════════════════════════════ */
+        .wheel-wrap {
+            position:relative; z-index:2;
+            margin:0 auto;
+            display:flex; align-items:center; justify-content:center;
+        }
+        .outer-ring {
+            position:absolute; border-radius:50%; background:transparent;
+            box-shadow:
+                0 0 0 8px #fff,
+                0 0 0 14px #FF6348,
+                0 0 0 20px #FFD700,
+                0 0 30px rgba(255,99,72,.4),
+                0 0 60px rgba(255,99,72,.2);
+        }
+        .lights-ring{position:absolute;border-radius:50%;pointer-events:none;}
+        .light-dot{position:absolute;border-radius:50%;animation:blink-light 1s ease-in-out infinite alternate;}
+        @keyframes blink-light{from{opacity:.45;box-shadow:none}to{opacity:1;box-shadow:0 0 9px currentColor}}
+        .pointer-wrap{
+            position:absolute;top:-40px;left:50%;
+            transform:translateX(-50%);z-index:10;
+            display:flex;flex-direction:column;align-items:center;
+        }
+        .pointer-head{
+            width:0;height:0;
+            border-left:24px solid transparent;
+            border-right:24px solid transparent;
+            border-top:52px solid #E31D0C;
+            filter:drop-shadow(0 4px 7px rgba(220,20,0,.7));
+        }
+        .pointer-base{
+            width:16px;height:16px;
+            background:#E31D0C;border-radius:50%;
+            margin-top:-5px;box-shadow:0 0 10px rgba(220,20,0,.8);
+        }
+        #wheelCanvas{display:block;border-radius:50%;}
+
+        /* ── Spin button ── */
+        .btn-area{
+            position:relative;z-index:2;
+            margin-top:14px;
+            display:flex;flex-direction:column;align-items:center;gap:10px;
+        }
+        #spinBtn{
+            padding:clamp(12px,2.2vw,17px) clamp(48px,9vw,76px);
+            font-family:'Kanit',sans-serif;
+            font-size:clamp(1.15em,2.8vw,1.55em); font-weight:900;
+            background:linear-gradient(135deg,#ff5030,#C9200A,#a81500);
+            color:#fff;border:none;border-radius:50px;cursor:pointer;
+            box-shadow:0 6px 0 rgba(110,10,0,.6),0 8px 22px rgba(220,30,0,.45);
+            transition:transform .15s,box-shadow .15s;
+            letter-spacing:2px;
+            text-shadow:0 2px 5px rgba(0,0,0,.3);
+            border:3px solid rgba(255,255,255,.28);
+        }
+        #spinBtn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 9px 0 rgba(110,10,0,.6),0 12px 30px rgba(220,30,0,.55);}
+        #spinBtn:active:not(:disabled){transform:translateY(3px);box-shadow:0 3px 0 rgba(110,10,0,.6);}
+        #spinBtn:disabled{opacity:.45;cursor:not-allowed;transform:none;}
+        #spinCount{color:#444;font-size:.88em;font-weight:700;background:rgba(255,255,255,.72);padding:4px 18px;border-radius:20px;}
+
+        /* ── Result modal ── */
+        #resultOverlay{
+            display:none;position:fixed;inset:0;
+            background:rgba(80,160,220,.38);
+            backdrop-filter:blur(7px);z-index:200;
+            justify-content:center;align-items:center;
+        }
+        #resultOverlay.show{display:flex;}
+        .result-card{
+            background:linear-gradient(160deg,#fff 0%,#fff6ee 100%);
+            border-radius:28px;padding:32px 38px 28px;
+            text-align:center;max-width:420px;width:92%;
+            box-shadow:0 0 0 5px #FF6348,0 0 0 9px #FFD700,0 28px 55px rgba(0,0,0,.28);
+            animation:popIn .45s cubic-bezier(.34,1.56,.64,1) forwards;
+        }
+        @keyframes popIn{from{transform:scale(.3) rotate(-8deg);opacity:0}to{transform:scale(1) rotate(0deg);opacity:1}}
+        .result-congrats{font-size:1.85em;font-weight:900;color:#E31D0C;margin-bottom:12px;}
+        .result-img-wrap{
+            width:210px;height:210px;
+            display:flex;align-items:center;justify-content:center;
+            margin:0 auto 14px;
+            background:#f7f7f7;border-radius:16px;
+            border:3px solid #FFD700;overflow:hidden;
+        }
+        .result-img-wrap img{max-width:100%;max-height:100%;object-fit:contain;}
+        .result-name{font-size:1.3em;font-weight:900;color:#E31D0C;margin-bottom:6px;}
+        .result-msg{font-size:.92em;color:#555;margin-bottom:20px;font-weight:700;}
+        .result-close{
+            padding:12px 42px;
+            font-family:'Kanit',sans-serif;font-size:1.05em;font-weight:900;
+            background:linear-gradient(135deg,#ff5030,#C9200A);
+            color:#fff;border:none;border-radius:30px;cursor:pointer;
+            box-shadow:0 4px 0 rgba(110,10,0,.55),0 6px 16px rgba(220,30,0,.4);
+            transition:transform .15s;letter-spacing:1px;
+        }
+        .result-close:hover{transform:translateY(-2px);}
+
+        /* ── Confetti ── */
+        .confetti-piece{position:fixed;top:-14px;pointer-events:none;animation:confettiFall linear forwards;}
+        @keyframes confettiFall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+    </style>
+</head>
+<body>
+
+<div class="sun"></div>
+<div class="cloud c1"></div><div class="cloud c2"></div>
+<div class="cloud c3"></div><div class="cloud c4"></div>
+
+<div class="main-layout">
+
+    <!-- ════════════ LEFT: ข้อความ + Mascots ════════════ -->
+    <div class="col-left">
+
+        <!-- PRIMARY header: Lucky Spin -->
+        <div class="game-title-bar">
+            <span class="hw-wrap">
+                <img src="hisher.svg" alt="His&Her Plus Point">
+            </span>
+            <span class="lucky-spin-text">Lucky Spin</span>
+        </div>
+
+        <!-- SECONDARY: event name -->
+        <div class="ev-header">
+            <span class="title-main">สหกรุ๊ป</span>
+            <div class="sub-row">
+                <span class="title-sub">แฟร์&amp;เฟส</span>
+                <span class="badge-30">ครั้ง<br>ที่&nbsp;30</span>
+            </div>
+            <div class="middle-row">
+                <span class="tagline">ไปด้วยกันนะ</span>
+                <div class="date-circle">
+                    <div class="date-num">25–28</div>
+                    <div class="date-month">มิ.ย. 69</div>
+                    <div class="date-venue">ไบเทค บางนา<br>ฮอลล์ 98–100</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mascots row – invite animation below text -->
+        <div class="mascot-row">
+            <img src="Mascot_01.png" alt="">
+            <img src="Mascot_02.png" alt="">
+            <img src="Mascot_03.png" alt="">
+            <img src="Mascot_04.png" alt="">
+            <img src="Mascot_05.png" alt="">
+        </div>
+
+    </div>
+
+    <!-- ════════════ RIGHT: วงล้อ ════════════ -->
+    <div class="col-right">
+        <div class="wheel-wrap" id="wheelWrap">
+            <div class="outer-ring"  id="outerRing"></div>
+            <div class="lights-ring" id="lightsRing"></div>
+            <div class="pointer-wrap">
+                <div class="pointer-head"></div>
+                <div class="pointer-base"></div>
+            </div>
+            <canvas id="wheelCanvas"></canvas>
+        </div>
+        <div class="btn-area">
+            <button id="spinBtn" onclick="spin()">หมุนเลย!&ensp;🎯</button>
+            <div id="spinCount">หมุนไปแล้ว: <span id="countNum">0</span> ครั้ง</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Result modal -->
+<div id="resultOverlay">
+    <div class="result-card">
+        <div class="result-congrats">🎉 ยินดีด้วย! 🎉</div>
+        <div class="result-img-wrap"><img id="resultImg" src="" alt=""></div>
+        <div class="result-name"  id="resultName"></div>
+        <div class="result-msg">คุณได้รับสินค้าพิเศษ! 🎁</div>
+        <button class="result-close" onclick="closeResult()">ปิด&ensp;✕</button>
+    </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   PRODUCT DATA  (10 segments, alternating M100 / C100M67K38)
+════════════════════════════════════════════════════════════ */
+const PRODUCTS = [
+    'BSC_HoneiV_HYA Serum.png',
+    'BSC_HoneiV_Sunscreen.png',
+    'BSC_Honey Yuzu.png',
+    'Enfant_Wipes extra mild.png',
+    'Sheene_Airy Powder.png',
+    'Sheene_Airy Soft Matte Lip.png',
+    'Sheene_Lip Nude.png',
+    'Sheene_Lip Pink.png',
+    'Sheene_loose powder.png',
+    'Sheene_Powder.png',
+];
+const SEG_COLORS = ['#EC008C', '#00349E'];   // M100 | C100M67K38
+
+function fileToName(f){ return f.replace(/\.png$/i,'').replace(/_/g,' '); }
+
+const segments = PRODUCTS.map((file,i)=>({ file, name:fileToName(file), color:SEG_COLORS[i%2] }));
+const N   = segments.length;
+const ARC = (2*Math.PI)/N;
+
+/* ════════════════════════════════════════════════════════════
+   CANVAS SETUP
+════════════════════════════════════════════════════════════ */
+const SIZE = Math.min(
+    Math.floor(window.innerWidth * 0.54) - 24,
+    Math.floor(window.innerHeight * 0.86),
+    640
+);
+const canvas = document.getElementById('wheelCanvas');
+canvas.width = canvas.height = SIZE;
+const ctx = canvas.getContext('2d');
+const CX = SIZE/2, CY = SIZE/2, R = CX - 4;
+
+/* Outer ring */
+const outerRingEl = document.getElementById('outerRing');
+outerRingEl.style.cssText += `width:${SIZE+28}px;height:${SIZE+28}px;left:-14px;top:-14px;`;
+
+/* Bulb lights */
+const lightsRing = document.getElementById('lightsRing');
+const LR = (SIZE+60)/2;
+lightsRing.style.cssText += `width:${SIZE+60}px;height:${SIZE+60}px;left:-30px;top:-30px;`;
+const LC = ['#FF6348','#FFD700','#7BED9F','#70A1FF','#FF6B9D','#FF9F43'];
+for(let i=0;i<24;i++){
+    const a=2*Math.PI/24*i-Math.PI/2, dot=document.createElement('div');
+    dot.className='light-dot';
+    const sz=11;
+    dot.style.cssText=`width:${sz}px;height:${sz}px;left:${LR+LR*Math.cos(a)-sz/2}px;top:${LR+LR*Math.sin(a)-sz/2}px;background:${LC[i%LC.length]};color:${LC[i%LC.length]};animation-delay:${(i*.04).toFixed(2)}s;`;
+    lightsRing.appendChild(dot);
+}
+
+/* ── Image cache ── */
+const imgCache = {};
+PRODUCTS.forEach(file=>{
+    const img=new Image();
+    img.src=file;
+    img.onload =()=>{ imgCache[file]=img;  drawWheel(); };
+    img.onerror=()=>{ imgCache[file]=null; drawWheel(); };
+});
+
+/* ── Hub (center) mascot ── */
+let hubMascotImg = null;
+const _hubImg = new Image();
+_hubImg.src = 'Mascot_01.png';
+_hubImg.onload  = ()=>{ hubMascotImg=_hubImg; drawWheel(); };
+
+/* ── Shake state for hub mascot ── */
+let centerShake = 0, shakePhase = 0;
+
+/* ════════════════════════════════════════════════════════════
+   DRAW WHEEL
+════════════════════════════════════════════════════════════ */
+let angle = -Math.PI/2 - ARC/2;
+
+function drawWheel(){
+    ctx.clearRect(0,0,SIZE,SIZE);
+
+    /* gold border */
+    ctx.beginPath(); ctx.arc(CX,CY,R+4,0,Math.PI*2);
+    ctx.fillStyle='#FFD700'; ctx.fill();
+    ctx.beginPath(); ctx.arc(CX,CY,R+1,0,Math.PI*2);
+    ctx.fillStyle='#fff'; ctx.fill();
+
+    for(let i=0;i<N;i++){
+        const seg=segments[i];
+        const start=angle+i*ARC, end=start+ARC, mid=start+ARC/2;
+
+        /* segment */
+        ctx.beginPath(); ctx.moveTo(CX,CY);
+        ctx.arc(CX,CY,R,start,end); ctx.closePath();
+        ctx.fillStyle=seg.color; ctx.fill();
+        ctx.strokeStyle='rgba(255,255,255,.55)'; ctx.lineWidth=1.5; ctx.stroke();
+
+        /* product image — large & clear */
+        const lr=R*0.65, lx=CX+lr*Math.cos(mid), ly=CY+lr*Math.sin(mid);
+        const logoSz=SIZE*0.28;
+
+        ctx.save();
+        ctx.translate(lx,ly);
+        ctx.rotate(mid+Math.PI/2);
+
+        const img=imgCache[seg.file];
+        if(img){
+            const ar=img.naturalWidth/img.naturalHeight;
+            let dw,dh;
+            if(ar>=1){dw=logoSz;dh=logoSz/ar;}
+            else{dh=logoSz;dw=logoSz*ar;}
+            ctx.shadowColor='rgba(0,0,0,.28)';
+            ctx.shadowBlur=7; ctx.shadowOffsetY=2;
+            ctx.drawImage(img,-dw/2,-dh/2,dw,dh);
+            ctx.shadowColor='transparent'; ctx.shadowBlur=0;
+        } else {
+            ctx.fillStyle='rgba(255,255,255,.22)';
+            ctx.beginPath(); ctx.arc(0,0,logoSz/2,0,Math.PI*2); ctx.fill();
+            ctx.fillStyle='#fff';
+            ctx.font=`bold ${SIZE*.02}px 'Kanit',sans-serif`;
+            ctx.textAlign='center'; ctx.textBaseline='middle';
+            seg.name.split(' ').slice(0,2).forEach((w,j,a)=>ctx.fillText(w,0,(j-(a.length-1)/2)*SIZE*.026));
+        }
+        ctx.restore();
+    }
+
+    /* ── Centre hub ── */
+    const hubR=SIZE*0.075;
+    const g=ctx.createRadialGradient(CX,CY,0,CX,CY,hubR);
+    g.addColorStop(0,'#fff'); g.addColorStop(.3,'#FFD700');
+    g.addColorStop(.7,'#FF6348'); g.addColorStop(1,'#E31D0C');
+    ctx.beginPath(); ctx.arc(CX,CY,hubR,0,Math.PI*2);
+    ctx.fillStyle=g;
+    ctx.shadowColor='rgba(0,0,0,.3)'; ctx.shadowBlur=12;
+    ctx.fill(); ctx.shadowBlur=0;
+    ctx.strokeStyle='#fff'; ctx.lineWidth=2.5; ctx.stroke();
+
+    /* Hub mascot (Mascot_01 – blue/pink shirt) */
+    if(hubMascotImg){
+        ctx.save();
+        ctx.translate(CX,CY);
+        ctx.rotate(centerShake);
+        ctx.beginPath(); ctx.arc(0,0,hubR*.95,0,Math.PI*2); ctx.clip();
+        const ms=hubR*2.0;
+        ctx.drawImage(hubMascotImg,-ms/2,-ms/2,ms,ms);
+        ctx.restore();
+    }
+
+    /* White centre dot */
+    ctx.beginPath(); ctx.arc(CX,CY,hubR*.38,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,.65)'; ctx.fill();
+}
+
+drawWheel();
+
+/* ════════════════════════════════════════════════════════════
+   SPIN  —  FIXED target angle formula
+════════════════════════════════════════════════════════════ */
+let spinning=false, spinCount=0;
+
+function spin(){
+    if(spinning) return;
+    spinning=true;
+    document.getElementById('spinBtn').disabled=true;
+
+    const targetSeg=Math.floor(Math.random()*N);
+    const extraRot =(6+Math.floor(Math.random()*5))*Math.PI*2;
+
+    /* ✅ Fixed: include -π/2 offset so pointer lands on correct segment */
+    const targetAng = -Math.PI/2 - (targetSeg*ARC + ARC/2);
+    const startAng  = angle;
+    const endAng    = startAng - ((startAng-targetAng) % (Math.PI*2)) - extraRot;
+    const duration  = 5800;
+    const t0        = performance.now();
+
+    function tick(t){
+        const p=Math.min((t-t0)/duration,1);
+        const e=1-Math.pow(1-p,5);
+        angle=startAng+(endAng-startAng)*e;
+
+        /* Hub mascot shake — fast at start, slows with wheel */
+        shakePhase+=0.28*(1-e);
+        centerShake=Math.sin(shakePhase)*0.22*(1-e);
+
+        drawWheel();
+        if(p<1){ requestAnimationFrame(tick); }
+        else{
+            angle=endAng; spinning=false;
+            centerShake=0; shakePhase=0;
+            spinCount++;
+            document.getElementById('countNum').textContent=spinCount;
+            document.getElementById('spinBtn').disabled=false;
+            showResult(segments[targetSeg]);
+        }
+    }
+    requestAnimationFrame(tick);
+}
+
+/* ════════════════════════════════════════════════════════════
+   RESULT
+════════════════════════════════════════════════════════════ */
+function showResult(seg){
+    const img=imgCache[seg.file];
+    const ri=document.getElementById('resultImg');
+    if(img){ ri.src=seg.file; ri.style.display='block'; }
+    else   { ri.style.display='none'; }
+    document.getElementById('resultName').textContent=seg.name;
+    document.getElementById('resultOverlay').classList.add('show');
+    launchConfetti();
+}
+function closeResult(){
+    document.getElementById('resultOverlay').classList.remove('show');
+}
+
+/* ════════════════════════════════════════════════════════════
+   CONFETTI
+════════════════════════════════════════════════════════════ */
+function launchConfetti(){
+    const colors=['#FF6348','#FFD700','#7BED9F','#70A1FF','#FF6B9D','#fff','#E31D0C','#EC008C','#00349E'];
+    for(let i=0;i<160;i++){
+        setTimeout(()=>{
+            const el=document.createElement('div');
+            el.className='confetti-piece';
+            const sz=6+Math.random()*10;
+            el.style.cssText=
+                `left:${Math.random()*100}vw;`+
+                `width:${sz}px;height:${sz}px;`+
+                `background:${colors[Math.floor(Math.random()*colors.length)]};`+
+                `border-radius:${Math.random()>.4?'50%':'3px'};`+
+                `animation-duration:${1.4+Math.random()*2.4}s;`+
+                `animation-delay:${Math.random()*.5}s;`;
+            document.body.appendChild(el);
+            setTimeout(()=>el.remove(),4500);
+        },i*14);
+    }
+}
+</script>
+</body>
+</html>

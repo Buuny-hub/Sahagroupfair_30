@@ -3,761 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>สหกรุ๊ปแฟร์&เฟส ครั้งที่ 30 – Lucky Spin</title>
-
-    <!-- Kanit 900 italic → title | Sriracha → tagline handwriting -->
+    <title>สหกรุ๊ปแฟร์&เฟส ครั้งที่ 30 – ลงทะเบียน</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,700;0,900;1,700;1,900&family=Sriracha&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;0,700;0,900;1,700;1,900&family=Sriracha&display=swap" rel="stylesheet">
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
 
         body {
-            /* poster sky blue */
             background: linear-gradient(180deg,
-                #e8f7ff 0%,
-                #b8e8ff 15%,
-                #5ec4f5 40%,
-                #7fd4f8 70%,
-                #c8eeff 100%);
+                #e8f7ff 0%, #b8e8ff 15%, #5ec4f5 40%, #7fd4f8 70%, #c8eeff 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             font-family: 'Kanit', sans-serif;
+            padding: 20px;
             overflow-x: hidden;
-            padding-bottom: 50px;
             position: relative;
         }
 
-        /* ===== SUN ===== */
+        /* ── Sun ── */
         .sun {
-            position: fixed;
-            top: -80px; right: -80px;
-            width: 260px; height: 260px;
-            background: radial-gradient(circle, #fffcb0 0%, #ffe040 35%, rgba(255,220,0,0) 68%);
-            border-radius: 50%;
-            animation: sun-pulse 4s ease-in-out infinite;
-            pointer-events: none; z-index: 0;
+            position: fixed; top:-80px; right:-80px;
+            width:260px; height:260px;
+            background: radial-gradient(circle,#fffcb0 0%,#ffe040 35%,rgba(255,220,0,0) 68%);
+            border-radius:50%; animation:sun-pulse 4s ease-in-out infinite;
+            pointer-events:none; z-index:0;
         }
         @keyframes sun-pulse {
-            0%,100% { transform: scale(1);   opacity:.85; }
-            50%     { transform: scale(1.1); opacity:1;   }
+            0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.1);opacity:1}
         }
 
-        /* ===== CLOUDS ===== */
-        .cloud {
-            position: fixed;
-            background: #fff;
-            border-radius: 60px;
-            pointer-events: none; z-index: 0;
-        }
-        .cloud::before, .cloud::after {
-            content:''; position:absolute;
-            background:#fff; border-radius:50%;
-        }
-        .c1 { width:180px; height:55px; top:50px;  left:-40px;  opacity:.9;  animation: drift 20s linear infinite; }
-        .c1::before { width:90px;  height:90px;  top:-46px; left:22px; }
-        .c1::after  { width:65px;  height:65px;  top:-32px; left:78px; }
+        /* ── Clouds ── */
+        .cloud{position:fixed;background:#fff;border-radius:60px;pointer-events:none;z-index:0;}
+        .cloud::before,.cloud::after{content:'';position:absolute;background:#fff;border-radius:50%;}
+        .c1{width:180px;height:55px;top:50px;left:-40px;opacity:.9;animation:drift 20s linear infinite;}
+        .c1::before{width:90px;height:90px;top:-46px;left:22px;}
+        .c1::after{width:65px;height:65px;top:-32px;left:78px;}
+        .c2{width:140px;height:46px;top:110px;right:-60px;opacity:.75;animation:drift 28s linear infinite reverse;}
+        .c2::before{width:70px;height:70px;top:-36px;left:18px;}
+        .c2::after{width:52px;height:52px;top:-26px;left:60px;}
+        @keyframes drift{from{transform:translateX(-130%)}to{transform:translateX(120vw)}}
 
-        .c2 { width:140px; height:46px; top:110px; right:-60px; opacity:.75; animation: drift 28s linear infinite reverse; }
-        .c2::before { width:70px; height:70px; top:-36px; left:18px; }
-        .c2::after  { width:52px; height:52px; top:-26px; left:60px; }
-
-        .c3 { width:220px; height:68px; top:14px;  left:42%;   opacity:.6;  animation: drift 34s linear infinite; }
-        .c3::before { width:100px; height:100px; top:-54px; left:28px; }
-        .c3::after  { width:76px;  height:76px;  top:-42px; left:100px; }
-
-        .c4 { width:110px; height:36px; top:80px; left:60%; opacity:.55; animation: drift 22s linear infinite reverse; }
-        .c4::before { width:55px; height:55px; top:-28px; left:14px; }
-        .c4::after  { width:40px; height:40px; top:-20px; left:48px; }
-
-        @keyframes drift {
-            from { transform: translateX(-130%); }
-            to   { transform: translateX(120vw); }
-        }
-
-        /* ===== MASCOTS (replace balloons) ===== */
-        .mascot {
-            position: fixed;
-            pointer-events: none;
-            z-index: 3;   /* in FRONT of main layout so always visible */
-            animation: mascotFloat ease-in-out infinite;
-        }
-        @keyframes mascotFloat {
-            0%,100% { transform: translateY(0px)   rotate(-1.2deg); }
-            30%     { transform: translateY(-18px)  rotate(0.4deg);  }
-            60%     { transform: translateY(-26px)  rotate(1.4deg);  }
-            80%     { transform: translateY(-14px)  rotate(-0.3deg); }
-        }
-        /* Left & right flanking — large, clearly visible */
-        .m1 { bottom:-8px; left:-8px;  width:clamp(130px,15vw,220px); animation-duration:4.3s; animation-delay:0s;   opacity:.92; }
-        .m2 { bottom:-8px; right:-8px; width:clamp(120px,14vw,205px); animation-duration:5.0s; animation-delay:1.4s; opacity:.88; }
-        /* Inner accent mascots — inside left column, not covering wheel */
-        .m3 { bottom:-8px; left:7%;    width:clamp(75px, 9vw,138px);  animation-duration:3.9s; animation-delay:2.1s; opacity:.75; }
-        .m4 { bottom:-8px; right:7%;   width:clamp(78px, 9vw,142px);  animation-duration:4.6s; animation-delay:0.9s; opacity:.72; }
-        .m5 { bottom:-8px; left:38%;   width:clamp(65px, 7vw,112px);  animation-duration:3.5s; animation-delay:1.8s; opacity:.60; }
-
-        /* ===== HEADER (inside left column) ===== */
-        .header {
+        /* ── Main card ── */
+        .card {
             position: relative; z-index: 2;
-            width: 100%;
+            background: rgba(255,255,255,.88);
+            backdrop-filter: blur(12px);
+            border-radius: 32px;
+            padding: clamp(28px,5vw,52px) clamp(32px,6vw,64px);
+            max-width: 500px; width: 100%;
+            box-shadow:
+                0 0 0 4px rgba(255,255,255,.6),
+                0 20px 60px rgba(0,80,160,.18);
             text-align: center;
-            padding: 0;
+            animation: cardIn .6s cubic-bezier(.34,1.56,.64,1) forwards;
         }
+        @keyframes cardIn{from{transform:scale(.8) translateY(30px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
 
-        /* --- "สหกรุ๊ป" --- */
-        .title-main {
+        /* ── Event title inside card ── */
+        .ev-title-main {
             display: block;
-            font-family: 'Kanit', sans-serif;
-            font-weight: 900;
-            font-style: italic;
-            font-size: clamp(4.2em, 13vw, 8em);
-            line-height: .9;
+            font-family:'Kanit',sans-serif; font-weight:900; font-style:italic;
+            font-size: clamp(2.8em, 8vw, 4.4em);
+            line-height: .88;
             color: #E31D0C;
-            -webkit-text-stroke: clamp(3px, .8vw, 6px) #ffffff;
-            paint-order: stroke fill;
-            filter: drop-shadow(0 6px 12px rgba(200,20,0,.28));
-            letter-spacing: -2px;
-        }
-
-        /* --- "แฟร์&เฟส" + badge row --- */
-        .sub-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: clamp(6px, 2vw, 14px);
-            margin-top: clamp(-10px, -2vw, -6px);
-        }
-
-        .title-sub {
-            font-family: 'Kanit', sans-serif;
-            font-weight: 900;
-            font-style: italic;
-            font-size: clamp(2.6em, 8.5vw, 5.2em);
-            line-height: 1;
-            color: #E31D0C;
-            -webkit-text-stroke: clamp(2px, .6vw, 4px) #ffffff;
+            -webkit-text-stroke: clamp(2px,.6vw,4px) #fff;
             paint-order: stroke fill;
             filter: drop-shadow(0 4px 8px rgba(200,20,0,.22));
-            letter-spacing: -1px;
+        }
+        .ev-sub-row {
+            display:flex; align-items:center; justify-content:center;
+            gap: clamp(6px,1.5vw,12px); margin-top: -4px;
+        }
+        .ev-title-sub {
+            font-family:'Kanit',sans-serif; font-weight:900; font-style:italic;
+            font-size: clamp(1.6em, 5vw, 2.8em); line-height:1;
+            color: #E31D0C;
+            -webkit-text-stroke: clamp(1.5px,.4vw,3px) #fff;
+            paint-order: stroke fill;
+        }
+        .ev-badge {
+            flex-shrink:0; display:inline-flex; flex-direction:column;
+            align-items:center; justify-content:center;
+            width:clamp(46px,8vw,66px); height:clamp(46px,8vw,66px);
+            border-radius:50%;
+            background:radial-gradient(circle at 38% 32%,#ff4c2a,#C9200A 65%);
+            border:2px solid #fff;
+            box-shadow:0 3px 0 rgba(130,15,0,.55),0 5px 14px rgba(220,30,0,.4);
+            font-family:'Kanit',sans-serif; font-weight:900; color:#fff;
+            font-size:clamp(.5em,1.2vw,.7em); line-height:1.25;
         }
 
-        /* "ครั้งที่ 30" red circle */
-        .badge-30 {
-            flex-shrink: 0;
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width:  clamp(60px, 11vw, 88px);
-            height: clamp(60px, 11vw, 88px);
-            border-radius: 50%;
-            background: radial-gradient(circle at 38% 32%, #ff4c2a, #C9200A 65%);
-            border: clamp(2px, .5vw, 4px) solid #fff;
-            box-shadow: 0 4px 0 rgba(130,15,0,.55), 0 6px 18px rgba(220,30,0,.45);
-            font-family: 'Kanit', sans-serif;
-            font-style: normal;
-            font-weight: 900;
-            color: #fff;
-            font-size: clamp(.6em, 1.6vw, .88em);
-            line-height: 1.25;
-        }
-
-        /* --- tagline + date SAME ROW --- */
-        .middle-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: clamp(10px, 3vw, 28px);
-            margin-top: clamp(4px, 1.2vw, 10px);
-            flex-wrap: wrap;
-        }
-
-        /* "ไปด้วยกันนะ" */
-        .tagline {
-            font-family: 'Sriracha', cursive;
-            font-size: clamp(1.8em, 5.5vw, 3.6em);
-            font-weight: 400;
-            font-style: italic;
-            color: #1a1a1a;
-            position: relative;
-            line-height: 1;
-            text-shadow: 1px 1px 0 rgba(255,255,255,.7);
-        }
-        .tagline::before {
-            content: '';
-            position: absolute;
-            bottom: -6px; left: -2%; width: 104%;
-            height: clamp(4px, 1vw, 7px);
-            background: #E86020;
-            border-radius: 4px;
-            transform: rotate(-1.5deg);
-        }
-        .tagline::after {
-            content: '';
-            position: absolute;
-            bottom: -13px; left: 3%; width: 96%;
-            height: clamp(3px, .7vw, 5px);
-            background: #E86020;
-            border-radius: 3px;
-            transform: rotate(-1deg);
-            opacity: .7;
-        }
-
-        /* date circle */
-        .date-circle {
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width:  clamp(100px, 18vw, 148px);
-            height: clamp(100px, 18vw, 148px);
-            border-radius: 50%;
-            background: radial-gradient(circle at 38% 30%, #ff5030, #C9200A 70%);
-            border: clamp(2px, .5vw, 4px) solid rgba(255,255,255,.5);
-            box-shadow: 0 5px 0 rgba(130,15,0,.5), 0 8px 22px rgba(220,30,0,.45);
-            color: #fff;
-            font-family: 'Kanit', sans-serif;
-            font-style: normal;
-            line-height: 1.18;
-            padding: 6px;
-            text-align: center;
-        }
-        .date-num   { font-size: clamp(1.5em, 4vw, 2.5em);   font-weight:900; line-height:1;    }
-        .date-month { font-size: clamp(.72em, 1.8vw, 1.08em); font-weight:700;                  }
-        .date-venue { font-size: clamp(.58em, 1.4vw, .85em);  font-weight:700; opacity:.92; line-height:1.15; }
-
-        /* ===== WHEEL GAME TITLE (above wheel in right column) ===== */
-        .wheel-game-title {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: clamp(8px, 1.5vw, 14px);
-            margin-bottom: clamp(8px, 1.4vw, 14px);
+        /* ── Game badge ── */
+        .game-badge {
+            display: inline-flex; align-items: center; gap: 10px;
             background: linear-gradient(135deg, #ff5030, #C9200A);
-            padding: clamp(8px,1.4vw,14px) clamp(22px,4vw,48px);
-            border-radius: 50px;
-            box-shadow: 0 5px 0 rgba(120,14,0,.55), 0 8px 22px rgba(220,30,0,.4);
-            border: clamp(2px,.5vw,3px) solid rgba(255,255,255,.38);
-            position: relative; z-index: 2;
+            padding: 8px 24px; border-radius: 50px; margin: 14px 0 20px;
+            box-shadow: 0 4px 0 rgba(120,14,0,.5), 0 6px 18px rgba(220,30,0,.35);
+            border: 2px solid rgba(255,255,255,.38);
         }
-        /* White pill wraps the SVG so it shows on any background color */
-        .hisher-wrap {
-            background: rgba(255,255,255,.95);
-            border-radius: 8px;
-            padding: 4px 10px;
-            display: inline-flex;
-            align-items: center;
-            line-height: 0;
-        }
-        .hisher-logo {
-            height: clamp(22px, 3.2vw, 40px);
-            width: auto;
-            display: block;
-        }
-        .lucky-spin-text {
-            font-family: 'Kanit', sans-serif;
-            font-weight: 900;
-            font-style: italic;
-            font-size: clamp(1.1em, 2.6vw, 1.8em);
-            color: #fff;
-            letter-spacing: 3px;
-            text-shadow: 0 2px 6px rgba(0,0,0,.28);
+        .game-badge .hw { background:rgba(255,255,255,.95); border-radius:7px; padding:3px 8px; }
+        .game-badge .hw img { height:clamp(18px,2.8vw,30px); width:auto; display:block; }
+        .game-badge-text {
+            font-family:'Kanit',sans-serif; font-weight:900; font-style:italic;
+            font-size:clamp(.95em,2vw,1.45em); color:#fff; letter-spacing:2px;
         }
 
-        /* ===== WHEEL AREA ===== */
-        .wheel-wrap {
-            position: relative; z-index: 2;
-            margin: 0 auto;
-            display: flex; align-items: center; justify-content: center;
+        /* ── Form ── */
+        .form-label {
+            font-size:clamp(1em,2.2vw,1.25em); font-weight:700; color:#333;
+            margin-bottom: 6px; display:block;
         }
-        .outer-ring {
-            position: absolute; border-radius: 50%; background: transparent;
-            box-shadow:
-                0 0 0 8px #fff,
-                0 0 0 14px #FF6348,
-                0 0 0 20px #FFD700,
-                0 0 30px rgba(255,99,72,.4),
-                0 0 60px rgba(255,99,72,.2);
+        .form-sub { font-size:.88em; color:#666; margin-bottom:18px; }
+        .member-input {
+            width:100%; padding:clamp(12px,2vw,16px) clamp(18px,3vw,24px);
+            font-family:'Kanit',sans-serif; font-size:clamp(1em,2.2vw,1.25em);
+            font-weight:700; text-align:center; letter-spacing:3px;
+            border: 3px solid #ddd; border-radius:50px;
+            outline:none; transition:border-color .2s, box-shadow .2s;
+            color:#222;
         }
-        .lights-ring { position: absolute; border-radius: 50%; pointer-events:none; }
-        .light-dot {
-            position: absolute; border-radius: 50%;
-            animation: blink-light 1s ease-in-out infinite alternate;
-        }
-        @keyframes blink-light {
-            from { opacity:.45; box-shadow:none; }
-            to   { opacity:1;   box-shadow:0 0 9px currentColor; }
-        }
-        .pointer-wrap {
-            position: absolute; top:-40px; left:50%;
-            transform: translateX(-50%); z-index:10;
-            display:flex; flex-direction:column; align-items:center;
-        }
-        .pointer-head {
-            width:0; height:0;
-            border-left:24px solid transparent;
-            border-right:24px solid transparent;
-            border-top:52px solid #E31D0C;
-            filter:drop-shadow(0 4px 7px rgba(220,20,0,.7));
-        }
-        .pointer-base {
-            width:16px; height:16px;
-            background:#E31D0C; border-radius:50%;
-            margin-top:-5px; box-shadow:0 0 10px rgba(220,20,0,.8);
-        }
-        #wheelCanvas { display:block; border-radius:50%; }
-
-        /* ===== SPIN BUTTON ===== */
-        .btn-area {
-            position:relative; z-index:2;
-            margin-top:16px;
-            display:flex; flex-direction:column; align-items:center; gap:10px;
-        }
-        #spinBtn {
-            padding: clamp(14px,2.5vw,18px) clamp(54px,10vw,80px);
-            font-family:'Kanit',sans-serif;
-            font-size: clamp(1.2em, 3vw, 1.6em);
-            font-weight:900;
+        .member-input:focus { border-color:#C9200A; box-shadow:0 0 0 4px rgba(201,32,10,.15); }
+        .member-input::placeholder { color:#bbb; letter-spacing:1px; font-weight:400; }
+        .error-msg { color:#E31D0C; font-size:.88em; font-weight:700; margin-top:8px; min-height:20px; }
+        .submit-btn {
+            margin-top:18px; width:100%;
+            padding:clamp(14px,2.4vw,18px);
+            font-family:'Kanit',sans-serif; font-size:clamp(1.1em,2.4vw,1.45em); font-weight:900;
             background: linear-gradient(135deg,#ff5030,#C9200A,#a81500);
             color:#fff; border:none; border-radius:50px; cursor:pointer;
-            box-shadow: 0 6px 0 rgba(110,10,0,.6), 0 8px 22px rgba(220,30,0,.45);
+            box-shadow:0 6px 0 rgba(110,10,0,.55),0 8px 22px rgba(220,30,0,.4);
             transition:transform .15s, box-shadow .15s;
             letter-spacing:2px;
-            text-shadow: 0 2px 5px rgba(0,0,0,.3);
             border: 3px solid rgba(255,255,255,.28);
         }
-        #spinBtn:hover:not(:disabled) {
-            transform:translateY(-3px);
-            box-shadow:0 9px 0 rgba(110,10,0,.6), 0 12px 30px rgba(220,30,0,.55);
-        }
-        #spinBtn:active:not(:disabled) {
-            transform:translateY(3px);
-            box-shadow:0 3px 0 rgba(110,10,0,.6), 0 4px 12px rgba(220,30,0,.35);
-        }
-        #spinBtn:disabled { opacity:.45; cursor:not-allowed; transform:none; }
-        #spinCount {
-            color:#444; font-size:.9em; font-weight:700;
-            background:rgba(255,255,255,.72); padding:4px 18px; border-radius:20px;
-        }
+        .submit-btn:hover { transform:translateY(-3px); box-shadow:0 9px 0 rgba(110,10,0,.55),0 12px 30px rgba(220,30,0,.5); }
+        .submit-btn:active { transform:translateY(2px); box-shadow:0 3px 0 rgba(110,10,0,.55); }
+        .submit-btn:disabled { opacity:.5; cursor:not-allowed; transform:none; }
 
-        /* ===== RESULT MODAL ===== */
-        #resultOverlay {
-            display:none; position:fixed; inset:0;
-            background:rgba(80,160,220,.38);
-            backdrop-filter:blur(7px); z-index:200;
-            justify-content:center; align-items:center;
-        }
-        #resultOverlay.show { display:flex; }
-        .result-card {
-            background:linear-gradient(160deg,#fff 0%,#fff6ee 100%);
-            border-radius:28px; padding:34px 38px 30px;
-            text-align:center; max-width:420px; width:92%;
-            box-shadow:
-                0 0 0 5px #FF6348,
-                0 0 0 9px #FFD700,
-                0 28px 55px rgba(0,0,0,.28);
-            animation:popIn .45s cubic-bezier(.34,1.56,.64,1) forwards;
-        }
-        @keyframes popIn {
-            from { transform:scale(.3) rotate(-8deg); opacity:0; }
-            to   { transform:scale(1)  rotate(0deg);  opacity:1; }
-        }
-        .result-congrats {
-            font-size:1.85em; font-weight:900; color:#E31D0C;
-            margin-bottom:12px;
-        }
-        .result-logo-wrap {
-            width:210px; height:210px;
-            display:flex; align-items:center; justify-content:center;
-            margin:0 auto 14px;
-            background:#f7f7f7; border-radius:16px;
-            border:3px solid #FFD700; overflow:hidden;
-        }
-        .result-logo-wrap img { max-width:100%; max-height:100%; object-fit:contain; }
-        .result-brand-name { font-size:1.35em; font-weight:900; color:#E31D0C; margin-bottom:6px; }
-        .result-msg { font-size:.94em; color:#555; margin-bottom:20px; font-weight:700; }
-        .result-close {
-            padding:12px 42px;
-            font-family:'Kanit',sans-serif; font-size:1.05em; font-weight:900;
-            background:linear-gradient(135deg,#ff5030,#C9200A);
-            color:#fff; border:none; border-radius:30px; cursor:pointer;
-            box-shadow:0 4px 0 rgba(110,10,0,.55), 0 6px 16px rgba(220,30,0,.4);
-            transition:transform .15s; letter-spacing:1px;
-        }
-        .result-close:hover { transform:translateY(-2px); }
-
-        /* ===== 2-COLUMN LAYOUT ===== */
-        .main-layout {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            width: 100%;
-            min-height: 100vh;
-            padding: 10px 24px;
-            gap: 0;
-            position: relative;
-            z-index: 2;
-        }
-        .col-left {
-            flex: 0 0 46%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 16px;
-        }
-        .col-right {
-            flex: 0 0 54%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 16px;
-        }
-        .header {
-            width: 100%;
-            max-width: 100%;
-            padding: 0;
-            text-align: center;
-        }
-
-        /* ===== CONFETTI ===== */
-        .confetti-piece {
-            position:fixed; top:-14px; pointer-events:none;
-            animation:confettiFall linear forwards;
-        }
-        @keyframes confettiFall {
-            to { transform:translateY(110vh) rotate(720deg); opacity:0; }
+        /* ── Date info ── */
+        .event-info {
+            margin-top:16px; padding:10px 20px;
+            background:rgba(255,255,255,.6); border-radius:20px;
+            font-size:.84em; color:#444; font-weight:700;
         }
     </style>
 </head>
 <body>
 
-<!-- Atmosphere -->
 <div class="sun"></div>
 <div class="cloud c1"></div>
 <div class="cloud c2"></div>
-<div class="cloud c3"></div>
-<div class="cloud c4"></div>
 
-<!-- Mascots floating in background (replace balloons) -->
-<img class="mascot m1" src="Mascot_01.png" alt="">
-<img class="mascot m2" src="Mascot_02.png" alt="">
-<img class="mascot m3" src="Mascot_03.png" alt="">
-<img class="mascot m4" src="Mascot_04.png" alt="">
-<img class="mascot m5" src="Mascot_05.png" alt="">
-
-<div class="main-layout">
-
-    <!-- ===== LEFT: ข้อความ ===== -->
-    <div class="col-left">
-        <div class="header">
-            <span class="title-main">สหกรุ๊ป</span>
-            <div class="sub-row">
-                <span class="title-sub">แฟร์&amp;เฟส</span>
-                <span class="badge-30">ครั้ง<br>ที่&nbsp;30</span>
-            </div>
-            <div class="middle-row">
-                <span class="tagline">ไปด้วยกันนะ</span>
-                <div class="date-circle">
-                    <div class="date-num">25–28</div>
-                    <div class="date-month">มิ.ย. 69</div>
-                    <div class="date-venue">ไบเทค บางนา<br>ฮอลล์ 98–100</div>
-                </div>
-            </div>
-        </div>
+<div class="card">
+    <!-- Event title -->
+    <span class="ev-title-main">สหกรุ๊ป</span>
+    <div class="ev-sub-row">
+        <span class="ev-title-sub">แฟร์&amp;เฟส</span>
+        <span class="ev-badge">ครั้ง<br>ที่&nbsp;30</span>
     </div>
 
-    <!-- ===== RIGHT: วงล้อ ===== -->
-    <div class="col-right">
-
-        <!-- Game title above the wheel -->
-        <div class="wheel-game-title">
-            <span class="hisher-wrap">
-                <img src="hisher.svg" alt="His&Her Plus Point" class="hisher-logo">
-            </span>
-            <span class="lucky-spin-text">Lucky Spin</span>
-        </div>
-
-        <div class="wheel-wrap" id="wheelWrap">
-            <div class="outer-ring"  id="outerRing"></div>
-            <div class="lights-ring" id="lightsRing"></div>
-            <div class="pointer-wrap">
-                <div class="pointer-head"></div>
-                <div class="pointer-base"></div>
-            </div>
-            <canvas id="wheelCanvas"></canvas>
-        </div>
-        <div class="btn-area">
-            <button id="spinBtn" onclick="spin()">หมุนเลย!&ensp;🎯</button>
-            <div id="spinCount">หมุนไปแล้ว: <span id="countNum">0</span> ครั้ง</div>
-        </div>
-
+    <!-- Game title badge -->
+    <div class="game-badge">
+        <span class="hw"><img src="hisher.svg" alt="His&Her"></span>
+        <span class="game-badge-text">Lucky Spin</span>
     </div>
 
-</div>
+    <!-- Form -->
+    <label class="form-label">กรอกรหัสสมาชิก His &amp; Her Plus Point</label>
+    <p class="form-sub">เพื่อร่วมหมุนวงล้อรับรางวัลพิเศษ 🎡</p>
 
-<!-- ===== RESULT MODAL ===== -->
-<div id="resultOverlay">
-    <div class="result-card">
-        <div class="result-congrats">🎉 ยินดีด้วย! 🎉</div>
-        <div class="result-logo-wrap"><img id="resultImg" src="" alt=""></div>
-        <div class="result-brand-name" id="resultBrand"></div>
-        <div class="result-msg">คุณได้รับสินค้าพิเศษ! 🎁</div>
-        <button class="result-close" onclick="closeResult()">ปิด&ensp;✕</button>
+    <input
+        class="member-input"
+        id="memberId"
+        type="text"
+        placeholder="รหัสสมาชิก"
+        autocomplete="off"
+        inputmode="text"
+        maxlength="30"
+    >
+    <div class="error-msg" id="errMsg"></div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitMember()">
+        เข้าร่วมสนุก!&ensp;🎡
+    </button>
+
+    <div class="event-info">
+        📅&ensp;25–28 มิ.ย. 69&ensp;|&ensp;ไบเทค บางนา ฮอลล์ 98–100
     </div>
 </div>
 
 <script>
-/* ============================================================
-   PRODUCT DATA  (10 items, alternating M100 / C100M67K38)
-   ============================================================ */
-const PRODUCTS = [
-    'BSC_HoneiV_HYA Serum.png',
-    'BSC_HoneiV_Sunscreen.png',
-    'BSC_Honey Yuzu.png',
-    'Enfant_Wipes extra mild.png',
-    'Sheene_Airy Powder.png',
-    'Sheene_Airy Soft Matte Lip.png',
-    'Sheene_Lip Nude.png',
-    'Sheene_Lip Pink.png',
-    'Sheene_loose powder.png',
-    'Sheene_Powder.png',
-];
+async function submitMember() {
+    const input = document.getElementById('memberId');
+    const errMsg = document.getElementById('errMsg');
+    const btn    = document.getElementById('submitBtn');
+    const id     = input.value.trim();
 
-/* M100 = #EC008C  |  C100M67K38 = #00349E */
-const SEG_COLORS = ['#EC008C', '#00349E'];
+    errMsg.textContent = '';
+    if (!id) { errMsg.textContent = '⚠️ กรุณากรอกรหัสสมาชิก'; input.focus(); return; }
 
-function fileToName(f) {
-    return f.replace(/\.png$/i, '').replace(/_/g, ' ');
-}
+    btn.disabled = true;
+    btn.textContent = 'กำลังส่งข้อมูล...';
 
-const segments = PRODUCTS.map((file, i) => ({
-    file,
-    name:  fileToName(file),
-    color: SEG_COLORS[i % 2],
-}));
-
-const N   = segments.length;   // 10
-const ARC = (2 * Math.PI) / N;
-
-/* ============================================================
-   CANVAS SETUP
-   ============================================================ */
-const SIZE = Math.min(
-    Math.floor(window.innerWidth * 0.50) - 60,
-    Math.floor(window.innerHeight * 0.82),
-    520
-);
-const canvas = document.getElementById('wheelCanvas');
-canvas.width = canvas.height = SIZE;
-const ctx = canvas.getContext('2d');
-const CX = SIZE / 2, CY = SIZE / 2, R = CX - 4;
-
-/* Outer ring sizing */
-const outerRingEl = document.getElementById('outerRing');
-outerRingEl.style.cssText +=
-    `width:${SIZE+28}px;height:${SIZE+28}px;left:-14px;top:-14px;`;
-
-/* Bulb lights */
-const lightsRing = document.getElementById('lightsRing');
-const LR = (SIZE + 60) / 2;
-lightsRing.style.cssText +=
-    `width:${SIZE+60}px;height:${SIZE+60}px;left:-30px;top:-30px;`;
-const LIGHT_COLORS = ['#FF6348','#FFD700','#7BED9F','#70A1FF','#FF6B9D','#FF9F43'];
-for (let i = 0; i < 24; i++) {
-    const a   = (2 * Math.PI / 24) * i - Math.PI / 2;
-    const dot = document.createElement('div');
-    dot.className = 'light-dot';
-    const sz = 11;
-    dot.style.cssText =
-        `width:${sz}px;height:${sz}px;` +
-        `left:${LR + LR * Math.cos(a) - sz/2}px;` +
-        `top:${LR  + LR * Math.sin(a) - sz/2}px;` +
-        `background:${LIGHT_COLORS[i % LIGHT_COLORS.length]};` +
-        `color:${LIGHT_COLORS[i % LIGHT_COLORS.length]};` +
-        `animation-delay:${(i * 0.04).toFixed(2)}s;`;
-    lightsRing.appendChild(dot);
-}
-
-/* Image cache — key by filename */
-const imgCache = {};
-PRODUCTS.forEach(file => {
-    const img = new Image();
-    img.src = file;
-    img.onload  = () => { imgCache[file] = img;  drawWheel(); };
-    img.onerror = () => { imgCache[file] = null; drawWheel(); };
-});
-
-/* ============================================================
-   DRAW
-   ============================================================ */
-let angle = -Math.PI / 2 - ARC / 2;
-
-function drawWheel() {
-    ctx.clearRect(0, 0, SIZE, SIZE);
-
-    /* gold outer border */
-    ctx.beginPath(); ctx.arc(CX, CY, R + 4, 0, Math.PI * 2);
-    ctx.fillStyle = '#FFD700'; ctx.fill();
-
-    ctx.beginPath(); ctx.arc(CX, CY, R + 1, 0, Math.PI * 2);
-    ctx.fillStyle = '#fff'; ctx.fill();
-
-    for (let i = 0; i < N; i++) {
-        const seg   = segments[i];
-        const start = angle + i * ARC;
-        const end   = start + ARC;
-        const mid   = start + ARC / 2;
-
-        /* segment slice — alternating M100 / C100M67K38 */
-        ctx.beginPath(); ctx.moveTo(CX, CY);
-        ctx.arc(CX, CY, R, start, end); ctx.closePath();
-        ctx.fillStyle   = seg.color; ctx.fill();
-        ctx.strokeStyle = 'rgba(255,255,255,.55)';
-        ctx.lineWidth   = 1.5; ctx.stroke();
-
-        /* product image — large & clear, no circle clip */
-        const lr     = R * 0.65;
-        const lx     = CX + lr * Math.cos(mid);
-        const ly     = CY + lr * Math.sin(mid);
-        const logoSz = SIZE * 0.28;   // much larger, fills segment well
-
-        ctx.save();
-        ctx.translate(lx, ly);
-        ctx.rotate(mid + Math.PI / 2);
-
-        const img = imgCache[seg.file];
-        if (img) {
-            /* contain scaling — preserve aspect ratio */
-            const ar = img.naturalWidth / img.naturalHeight;
-            let drawW, drawH;
-            if (ar >= 1) { drawW = logoSz; drawH = logoSz / ar; }
-            else         { drawH = logoSz; drawW = logoSz * ar; }
-
-            /* subtle drop-shadow for depth */
-            ctx.shadowColor    = 'rgba(0,0,0,.30)';
-            ctx.shadowBlur     = 8;
-            ctx.shadowOffsetX  = 0;
-            ctx.shadowOffsetY  = 3;
-            ctx.drawImage(img, -drawW / 2, -drawH / 2, drawW, drawH);
-            ctx.shadowColor    = 'transparent';
-            ctx.shadowBlur     = 0;
+    try {
+        const res  = await fetch('/api/register', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ memberId: id }),
+        });
+        const data = await res.json();
+        if (data.success) {
+            window.location.href = '/game.html';
         } else {
-            /* fallback: semi-transparent circle + product name */
-            ctx.fillStyle = 'rgba(255,255,255,.22)';
-            ctx.beginPath(); ctx.arc(0, 0, logoSz / 2, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#fff';
-            ctx.font = `bold ${SIZE * .022}px 'Kanit',sans-serif`;
-            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            const words = seg.name.split(' ');
-            const show  = words.slice(0, 2);
-            const lh    = SIZE * .028;
-            show.forEach((w, j) =>
-                ctx.fillText(w, 0, (j - (show.length - 1) / 2) * lh)
-            );
+            errMsg.textContent = data.error || 'เกิดข้อผิดพลาด กรุณาลองใหม่';
+            btn.disabled = false; btn.textContent = 'เข้าร่วมสนุก! 🎡';
         }
-        ctx.restore();
-    }
-
-    /* centre hub */
-    const hubR = SIZE * 0.075;
-    const g = ctx.createRadialGradient(CX, CY, 0, CX, CY, hubR);
-    g.addColorStop(0,  '#fff');
-    g.addColorStop(.3, '#FFD700');
-    g.addColorStop(.7, '#FF6348');
-    g.addColorStop(1,  '#E31D0C');
-    ctx.beginPath(); ctx.arc(CX, CY, hubR, 0, Math.PI * 2);
-    ctx.fillStyle = g;
-    ctx.shadowColor = 'rgba(0,0,0,.3)'; ctx.shadowBlur = 12;
-    ctx.fill(); ctx.shadowBlur = 0;
-    ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.stroke();
-    ctx.beginPath(); ctx.arc(CX, CY, hubR * .42, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(255,255,255,.65)'; ctx.fill();
-}
-
-drawWheel();
-
-/* ============================================================
-   SPIN
-   ============================================================ */
-let spinning = false, spinCount = 0;
-
-function spin() {
-    if (spinning) return;
-    spinning = true;
-    document.getElementById('spinBtn').disabled = true;
-
-    const targetSeg = Math.floor(Math.random() * N);
-    const extraRot  = (6 + Math.floor(Math.random() * 5)) * Math.PI * 2;
-    const targetAng = -(targetSeg * ARC + ARC / 2);
-    const startAng  = angle;
-    const endAng    = startAng - ((startAng - targetAng) % (Math.PI * 2)) - extraRot;
-    const duration  = 5800;
-    const t0        = performance.now();
-
-    function tick(t) {
-        const p = Math.min((t - t0) / duration, 1);
-        const e = 1 - Math.pow(1 - p, 5);
-        angle = startAng + (endAng - startAng) * e;
-        drawWheel();
-        if (p < 1) { requestAnimationFrame(tick); }
-        else {
-            angle = endAng; spinning = false;
-            spinCount++;
-            document.getElementById('countNum').textContent = spinCount;
-            document.getElementById('spinBtn').disabled = false;
-            showResult(segments[targetSeg]);
-        }
-    }
-    requestAnimationFrame(tick);
-}
-
-/* ============================================================
-   RESULT
-   ============================================================ */
-function showResult(seg) {
-    const img = imgCache[seg.file];
-    const ri  = document.getElementById('resultImg');
-    if (img) { ri.src = seg.file; ri.style.display = 'block'; }
-    else      { ri.style.display = 'none'; }
-    document.getElementById('resultBrand').textContent = seg.name;
-    document.getElementById('resultOverlay').classList.add('show');
-    launchConfetti();
-}
-function closeResult() {
-    document.getElementById('resultOverlay').classList.remove('show');
-}
-
-/* ============================================================
-   CONFETTI
-   ============================================================ */
-function launchConfetti() {
-    const colors = [
-        '#FF6348','#FFD700','#7BED9F','#70A1FF','#FF6B9D',
-        '#fff','#E31D0C','#FFA502','#EC008C','#00349E'
-    ];
-    for (let i = 0; i < 160; i++) {
-        setTimeout(() => {
-            const el = document.createElement('div');
-            el.className = 'confetti-piece';
-            const sz = 6 + Math.random() * 10;
-            el.style.cssText =
-                `left:${Math.random()*100}vw;` +
-                `width:${sz}px;height:${sz}px;` +
-                `background:${colors[Math.floor(Math.random()*colors.length)]};` +
-                `border-radius:${Math.random()>.4?'50%':'3px'};` +
-                `animation-duration:${1.4+Math.random()*2.4}s;` +
-                `animation-delay:${Math.random()*.5}s;`;
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 4500);
-        }, i * 14);
+    } catch {
+        /* No backend (static hosting) – go directly to game */
+        window.location.href = '/game.html';
     }
 }
+
+document.getElementById('memberId').addEventListener('keypress', e => {
+    if (e.key === 'Enter') submitMember();
+});
 </script>
 </body>
 </html>
