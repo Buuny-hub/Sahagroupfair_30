@@ -377,6 +377,9 @@
 </div>
 
 <script>
+/* ── Member ID (passed from index.html via sessionStorage) ── */
+const MEMBER_ID = sessionStorage.getItem('memberId') || 'guest';
+
 /* ════════════════════════════════════════════════════════════
    PRODUCT DATA  (10 segments, alternating M100 / C100M67K38)
 ════════════════════════════════════════════════════════════ */
@@ -584,9 +587,20 @@ function showResult(seg){
     document.getElementById('resultName').textContent=seg.name;
     document.getElementById('resultOverlay').classList.add('show');
     launchConfetti();
+
+    /* ── Save member + product to backend (best-effort) ── */
+    fetch('/api/save', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ memberId: MEMBER_ID, product: seg.name }),
+    }).catch(()=>{});
 }
+
 function closeResult(){
     document.getElementById('resultOverlay').classList.remove('show');
+    /* ── Clear session & go back for next player ── */
+    sessionStorage.removeItem('memberId');
+    window.location.href = 'index.html';
 }
 
 /* ════════════════════════════════════════════════════════════

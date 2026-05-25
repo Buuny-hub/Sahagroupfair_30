@@ -6,11 +6,11 @@ const app  = express();
 const PORT = process.env.PORT || 3000;
 
 /* ── Data storage ── */
-const DATA_DIR  = path.join(__dirname, 'data');
-const DATA_FILE = path.join(DATA_DIR, 'members.json');
+const DATA_DIR   = path.join(__dirname, 'data');
+const DATA_FILE  = path.join(DATA_DIR, 'members.json');
 const ADMIN_PASS = process.env.ADMIN_PASS || 'sahagroup30';
 
-if (!fs.existsSync(DATA_DIR))  fs.mkdirSync(DATA_DIR,  { recursive: true });
+if (!fs.existsSync(DATA_DIR))  fs.mkdirSync(DATA_DIR, { recursive: true });
 if (!fs.existsSync(DATA_FILE)) fs.writeFileSync(DATA_FILE, '[]', 'utf8');
 
 function readMembers() {
@@ -20,28 +20,50 @@ function readMembers() {
 function writeMembers(arr) {
     fs.writeFileSync(DATA_FILE, JSON.stringify(arr, null, 2), 'utf8');
 }
+function thaiTime() {
+    return new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' });
+}
 
 /* ── Middleware ── */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname));   // serve all files in root
+app.use(express.static(__dirname));
 
-/* ── API: register member ── */
-app.post('/api/register', (req, res) => {
-    const id = (req.body.memberId || '').trim();
+/* ────────────────────────────────────────────────
+   API: save complete game record
+   Body: { memberId, product }
+   Called from game.html after spin result
+──────────────────────────────────────────────── */
+app.post('/api/save', (req, res) => {
+    const id      = (req.body.memberId || '').trim();
+    const product = (req.body.product  || '-').trim();
+
     if (!id) return res.status(400).json({ error: 'กรุณากรอกรหัสสมาชิก' });
 
     const members = readMembers();
     members.push({
         id,
+        product,
         timestamp: new Date().toISOString(),
-        time_th:   new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' })
+        time_th:   thaiTime(),
     });
     writeMembers(members);
     res.json({ success: true });
 });
 
-/* ── Admin: view members ── */
+/* ── (legacy) register without product ── */
+app.post('/api/register', (req, res) => {
+    const id = (req.body.memberId || '').trim();
+    if (!id) return res.status(400).json({ error: 'กรุณากรอกรหัสสมาชิก' });
+    const members = readMembers();
+    members.push({ id, product: '-', timestamp: new Date().toISOString(), time_th: thaiTime() });
+    writeMembers(members);
+    res.json({ success: true });
+});
+
+/* ────────────────────────────────────────────────
+   Admin: JSON list
+──────────────────────────────────────────────── */
 app.get('/admin/members', (req, res) => {
     if (req.query.pass !== ADMIN_PASS)
         return res.status(401).json({ error: 'Unauthorized' });
@@ -49,81 +71,192 @@ app.get('/admin/members', (req, res) => {
     res.json({ count: members.length, members });
 });
 
-/* ── Admin: export CSV ── */
+/* ────────────────────────────────────────────────
+   Admin: CSV export (Excel-ready, UTF-8 BOM)
+──────────────────────────────────────────────── */
 app.get('/admin/export', (req, res) => {
     if (req.query.pass !== ADMIN_PASS)
         return res.status(401).send('Unauthorized');
     const members = readMembers();
-    const csv = '﻿' +             // BOM for Excel Thai
-        'ลำดับ,รหัสสมาชิก,วันที่-เวลา\n' +
-        members.map((m, i) => `${i + 1},"${m.id}","${m.time_th}"`).join('\n');
+    const csv = '﻿' +
+        'ลำดับ,รหัสสมาชิก,สินค้าที่ได้รับ,วันที่-เวลา\n' +
+        members.map((m, i) =>
+            `${i + 1},"${m.id}","${m.product || '-'}","${m.time_th}"`
+        ).join('\n');
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
     res.setHeader('Content-Disposition',
-        `attachment; filename="members_${new Date().toISOString().slice(0,10)}.csv"`);
+        `attachment; filename="sahagroup30_members_${new Date().toISOString().slice(0,10)}.csv"`);
     res.send(csv);
 });
 
-/* ── Admin: HTML dashboard ── */
+/* ────────────────────────────────────────────────
+   Admin: HTML dashboard
+──────────────────────────────────────────────── */
 app.get('/admin', (req, res) => {
     const pass = req.query.pass || '';
+
+    /* login gate */
     if (pass !== ADMIN_PASS) {
         return res.send(`<!DOCTYPE html><html lang="th">
-<head><meta charset="UTF-8"><title>Admin</title>
+<head><meta charset="UTF-8"><title>Admin – Sahagroup Fair 30</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-  body{font-family:sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;
-       background:#e8f7ff;margin:0}
-  .card{background:#fff;padding:40px;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,.15);
-        text-align:center;min-width:320px}
-  h2{color:#C9200A;margin-bottom:20px}
-  input{padding:12px 20px;font-size:1em;border:2px solid #ddd;border-radius:30px;width:100%;
-        box-sizing:border-box;margin-bottom:12px;text-align:center}
-  button{padding:12px 40px;background:linear-gradient(135deg,#ff5030,#C9200A);color:#fff;
-         border:none;border-radius:30px;font-size:1em;font-weight:700;cursor:pointer;width:100%}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Kanit',sans-serif;display:flex;align-items:center;justify-content:center;
+       min-height:100vh;background:linear-gradient(135deg,#e8f7ff,#b8e8ff,#5ec4f5)}
+  .card{background:#fff;padding:48px 52px;border-radius:24px;
+        box-shadow:0 12px 40px rgba(0,0,0,.14);text-align:center;width:360px}
+  h2{color:#C9200A;margin-bottom:8px;font-size:1.6em}
+  p{color:#666;font-size:.9em;margin-bottom:24px}
+  input{width:100%;padding:14px 20px;font-family:'Kanit',sans-serif;font-size:1em;
+        border:2px solid #ddd;border-radius:30px;margin-bottom:14px;text-align:center;outline:none}
+  input:focus{border-color:#C9200A}
+  button{width:100%;padding:14px;font-family:'Kanit',sans-serif;font-size:1.05em;font-weight:700;
+         background:linear-gradient(135deg,#ff5030,#C9200A);color:#fff;
+         border:none;border-radius:30px;cursor:pointer;
+         box-shadow:0 4px 0 rgba(120,14,0,.5)}
 </style></head>
 <body><div class="card">
   <h2>🔐 Admin Login</h2>
-  <form method="GET">
-    <input type="password" name="pass" placeholder="รหัสผ่าน Admin">
+  <p>สหกรุ๊ปแฟร์&เฟส ครั้งที่ 30</p>
+  <form method="GET" action="/admin">
+    <input type="password" name="pass" placeholder="รหัสผ่าน Admin" autofocus>
     <button type="submit">เข้าสู่ระบบ</button>
   </form>
 </div></body></html>`);
     }
 
+    /* dashboard */
     const members = readMembers();
-    const rows = members.map((m, i) => `
-        <tr>
-            <td>${i + 1}</td>
-            <td>${m.id}</td>
-            <td>${m.time_th}</td>
-        </tr>`).join('');
+
+    /* stats */
+    const total   = members.length;
+    const played  = members.filter(m => m.product && m.product !== '-').length;
+    const pending = total - played;
+
+    /* product frequency */
+    const freq = {};
+    members.forEach(m => {
+        if (m.product && m.product !== '-')
+            freq[m.product] = (freq[m.product] || 0) + 1;
+    });
+    const topProduct = Object.entries(freq).sort((a,b)=>b[1]-a[1])[0];
+
+    const rows = [...members].reverse().map((m, i) => {
+        const idx  = total - i;
+        const hasProd = m.product && m.product !== '-';
+        return `<tr>
+            <td style="text-align:center">${idx}</td>
+            <td><strong>${m.id}</strong></td>
+            <td style="color:${hasProd?'#155d2f':'#aaa'}">
+                ${hasProd ? '✅ ' + m.product : '⏳ ยังไม่เล่น'}
+            </td>
+            <td style="color:#888;font-size:.88em">${m.time_th}</td>
+        </tr>`;
+    }).join('');
 
     res.send(`<!DOCTYPE html><html lang="th">
-<head><meta charset="UTF-8"><title>Admin – สมาชิก</title>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin – สหกรุ๊ปแฟร์ 30</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-  body{font-family:'Kanit',sans-serif;background:#e8f7ff;margin:0;padding:24px}
-  h1{color:#C9200A}
-  .summary{background:#fff;padding:16px 24px;border-radius:12px;margin-bottom:20px;
-           display:inline-block;box-shadow:0 4px 12px rgba(0,0,0,.1)}
-  table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;
-        overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.1)}
-  th{background:#C9200A;color:#fff;padding:12px 16px;text-align:left}
-  td{padding:10px 16px;border-bottom:1px solid #eee}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Kanit',sans-serif;background:#f0f6ff;padding:24px}
+  header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px}
+  h1{color:#C9200A;font-size:1.7em}
+  .stat-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px}
+  .stat{background:#fff;border-radius:16px;padding:16px 24px;text-align:center;
+        box-shadow:0 4px 12px rgba(0,0,0,.08);min-width:120px;flex:1}
+  .stat .num{font-size:2em;font-weight:900;line-height:1}
+  .stat .lbl{font-size:.78em;color:#666;margin-top:4px}
+  .stat.red  .num{color:#C9200A}
+  .stat.blue .num{color:#00349E}
+  .stat.pink .num{color:#EC008C}
+  .stat.green .num{color:#155d2f}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 22px;border-radius:30px;
+       text-decoration:none;font-weight:700;font-size:.9em;cursor:pointer;border:none}
+  .btn-green{background:linear-gradient(135deg,#28a745,#1e7e34);color:#fff}
+  .btn-red  {background:linear-gradient(135deg,#ff5030,#C9200A);color:#fff}
+  .btn-gray {background:#eee;color:#333}
+  .search{padding:10px 18px;font-family:'Kanit',sans-serif;font-size:.95em;
+          border:2px solid #ddd;border-radius:30px;width:260px;outline:none}
+  .search:focus{border-color:#C9200A}
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;
+        overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.09)}
+  th{background:#C9200A;color:#fff;padding:13px 16px;text-align:left;font-size:.92em}
+  td{padding:11px 16px;border-bottom:1px solid #f0f0f0;font-size:.92em}
   tr:last-child td{border-bottom:none}
-  tr:hover td{background:#fff5f5}
-  .btn{display:inline-block;margin-top:16px;padding:10px 28px;
-       background:linear-gradient(135deg,#28a745,#1e7e34);color:#fff;
-       border-radius:30px;text-decoration:none;font-weight:700}
-  .btn-red{background:linear-gradient(135deg,#ff5030,#C9200A);margin-left:10px}
-</style></head>
+  tr:hover td{background:#fff8f8}
+  .empty{text-align:center;color:#aaa;padding:32px}
+  @media(max-width:600px){td:nth-child(4){display:none}th:nth-child(4){display:none}}
+</style>
+</head>
 <body>
-  <h1>📋 รายชื่อสมาชิกที่ร่วมกิจกรรม</h1>
-  <div class="summary">สมาชิกทั้งหมด: <strong>${members.length} คน</strong></div><br>
-  <a class="btn" href="/admin/export?pass=${pass}">⬇ Export CSV</a>
-  <a class="btn btn-red" href="/admin?pass=${pass}" onclick="location.reload();return false;">🔄 Refresh</a>
-  <table>
-    <thead><tr><th>#</th><th>รหัสสมาชิก</th><th>วันที่-เวลา</th></tr></thead>
-    <tbody>${rows || '<tr><td colspan="3" style="text-align:center;color:#aaa">ยังไม่มีข้อมูล</td></tr>'}</tbody>
-  </table>
+
+<header>
+  <h1>📋 ระบบหลังบ้าน – Lucky Spin</h1>
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <a class="btn btn-green" href="/admin/export?pass=${pass}">⬇ Export CSV</a>
+    <a class="btn btn-red"   href="/admin?pass=${pass}">🔄 Refresh</a>
+    <a class="btn btn-gray"  href="/">🏠 หน้าแรก</a>
+  </div>
+</header>
+
+<!-- Stats -->
+<div class="stat-row">
+  <div class="stat red">  <div class="num">${total}</div>  <div class="lbl">สมาชิกทั้งหมด</div></div>
+  <div class="stat green"><div class="num">${played}</div> <div class="lbl">เล่นแล้ว</div></div>
+  <div class="stat blue"> <div class="num">${pending}</div><div class="lbl">ยังไม่เล่น</div></div>
+  <div class="stat pink"> <div class="num">${topProduct ? topProduct[1] : 0}</div>
+    <div class="lbl">${topProduct ? topProduct[0].split(' ').slice(0,2).join(' ') : 'สินค้ายอดนิยม'}</div></div>
+</div>
+
+<!-- Search -->
+<div style="margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+  <input class="search" id="searchInput" type="text"
+         placeholder="🔍 ค้นหารหัสสมาชิก หรือชื่อสินค้า..."
+         oninput="filterTable()">
+  <span id="countLabel" style="color:#666;font-size:.88em"></span>
+</div>
+
+<!-- Table -->
+<table id="dataTable">
+  <thead>
+    <tr>
+      <th style="width:50px">#</th>
+      <th>รหัสสมาชิก</th>
+      <th>สินค้าที่ได้รับ</th>
+      <th>วันที่-เวลา</th>
+    </tr>
+  </thead>
+  <tbody id="tbody">
+    ${rows || '<tr><td colspan="4" class="empty">ยังไม่มีข้อมูล</td></tr>'}
+  </tbody>
+</table>
+
+<p style="margin-top:14px;color:#aaa;font-size:.8em">
+  แสดงรายการล่าสุดก่อน &nbsp;|&nbsp; Admin pass ตั้งค่าได้ผ่าน Railway env: <code>ADMIN_PASS</code>
+</p>
+
+<script>
+function filterTable(){
+    const q   = document.getElementById('searchInput').value.toLowerCase();
+    const rows = document.querySelectorAll('#tbody tr');
+    let shown = 0;
+    rows.forEach(r => {
+        const txt = r.textContent.toLowerCase();
+        const ok  = !q || txt.includes(q);
+        r.style.display = ok ? '' : 'none';
+        if (ok) shown++;
+    });
+    document.getElementById('countLabel').textContent =
+        q ? \`พบ \${shown} รายการ\` : '';
+}
+// update count on load
+document.getElementById('countLabel').textContent = '';
+</script>
 </body></html>`);
 });
 

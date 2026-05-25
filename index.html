@@ -197,7 +197,7 @@
 </div>
 
 <script>
-async function submitMember() {
+function submitMember() {
     const input  = document.getElementById('memberId');
     const errMsg = document.getElementById('errMsg');
     const btn    = document.getElementById('submitBtn');
@@ -206,22 +206,10 @@ async function submitMember() {
     errMsg.textContent = '';
     if (!id) { errMsg.textContent = '⚠️ กรุณากรอกรหัสสมาชิก'; input.focus(); return; }
 
+    /* ── Store ID so game.html can read it, then redirect ── */
+    sessionStorage.setItem('memberId', id);
     btn.disabled = true;
     btn.textContent = 'กำลังโหลด...';
-
-    /* ── Best-effort save to backend (3 s timeout) ── */
-    try {
-        const ctrl = new AbortController();
-        setTimeout(() => ctrl.abort(), 3000);
-        await fetch('/api/register', {
-            method:  'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ memberId: id }),
-            signal:  ctrl.signal,
-        });
-    } catch { /* ignore – proceed regardless */ }
-
-    /* ── Always go to game ── */
     window.location.href = 'game.html';
 }
 
