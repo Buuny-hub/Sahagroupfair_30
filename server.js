@@ -62,21 +62,17 @@ app.post('/api/register', (req, res) => {
 });
 
 /* ────────────────────────────────────────────────
-   Admin: JSON list
+   Admin: JSON list (no password required)
 ──────────────────────────────────────────────── */
 app.get('/admin/members', (req, res) => {
-    if (req.query.pass !== ADMIN_PASS)
-        return res.status(401).json({ error: 'Unauthorized' });
     const members = readMembers();
     res.json({ count: members.length, members });
 });
 
 /* ────────────────────────────────────────────────
-   Admin: CSV export (Excel-ready, UTF-8 BOM)
+   Admin: CSV export (no password required)
 ──────────────────────────────────────────────── */
 app.get('/admin/export', (req, res) => {
-    if (req.query.pass !== ADMIN_PASS)
-        return res.status(401).send('Unauthorized');
     const members = readMembers();
     const csv = '﻿' +
         'ลำดับ,รหัสสมาชิก,สินค้าที่ได้รับ,วันที่-เวลา\n' +
@@ -90,43 +86,11 @@ app.get('/admin/export', (req, res) => {
 });
 
 /* ────────────────────────────────────────────────
-   Admin: HTML dashboard
+   Admin: HTML dashboard (no password required)
 ──────────────────────────────────────────────── */
 app.get('/admin', (req, res) => {
-    const pass = req.query.pass || '';
+    const pass = '';   // kept for export link compatibility
 
-    /* login gate */
-    if (pass !== ADMIN_PASS) {
-        return res.send(`<!DOCTYPE html><html lang="th">
-<head><meta charset="UTF-8"><title>Admin – Sahagroup Fair 30</title>
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700;900&display=swap" rel="stylesheet">
-<style>
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:'Kanit',sans-serif;display:flex;align-items:center;justify-content:center;
-       min-height:100vh;background:linear-gradient(135deg,#e8f7ff,#b8e8ff,#5ec4f5)}
-  .card{background:#fff;padding:48px 52px;border-radius:24px;
-        box-shadow:0 12px 40px rgba(0,0,0,.14);text-align:center;width:360px}
-  h2{color:#C9200A;margin-bottom:8px;font-size:1.6em}
-  p{color:#666;font-size:.9em;margin-bottom:24px}
-  input{width:100%;padding:14px 20px;font-family:'Kanit',sans-serif;font-size:1em;
-        border:2px solid #ddd;border-radius:30px;margin-bottom:14px;text-align:center;outline:none}
-  input:focus{border-color:#C9200A}
-  button{width:100%;padding:14px;font-family:'Kanit',sans-serif;font-size:1.05em;font-weight:700;
-         background:linear-gradient(135deg,#ff5030,#C9200A);color:#fff;
-         border:none;border-radius:30px;cursor:pointer;
-         box-shadow:0 4px 0 rgba(120,14,0,.5)}
-</style></head>
-<body><div class="card">
-  <h2>🔐 Admin Login</h2>
-  <p>สหกรุ๊ปแฟร์&เฟส ครั้งที่ 30</p>
-  <form method="GET" action="/admin">
-    <input type="password" name="pass" placeholder="รหัสผ่าน Admin" autofocus>
-    <button type="submit">เข้าสู่ระบบ</button>
-  </form>
-</div></body></html>`);
-    }
-
-    /* dashboard */
     const members = readMembers();
 
     /* stats */
