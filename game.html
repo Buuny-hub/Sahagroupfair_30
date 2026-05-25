@@ -500,14 +500,15 @@ function drawWheel(){
             ctx.shadowBlur=7; ctx.shadowOffsetY=2;
             ctx.drawImage(img,-dw/2,-dh/2,dw,dh);
             ctx.shadowColor='transparent'; ctx.shadowBlur=0;
-        } else {
-            ctx.fillStyle='rgba(255,255,255,.22)';
-            ctx.beginPath(); ctx.arc(0,0,logoSz/2,0,Math.PI*2); ctx.fill();
-            ctx.fillStyle='#fff';
-            ctx.font=`bold ${SIZE*.02}px 'Kanit',sans-serif`;
+        } else if(img === null){
+            /* image failed to load — text fallback, sized from maxTang */
+            ctx.fillStyle='rgba(255,255,255,.85)';
+            ctx.font=`bold ${maxTang*0.18}px 'Kanit',sans-serif`;
             ctx.textAlign='center'; ctx.textBaseline='middle';
-            seg.name.split(' ').slice(0,2).forEach((w,j,a)=>ctx.fillText(w,0,(j-(a.length-1)/2)*SIZE*.026));
+            const words=seg.name.split(' ').slice(0,2);
+            words.forEach((w,j)=>ctx.fillText(w,0,(j-(words.length-1)/2)*maxTang*0.22));
         }
+        /* if img===undefined (still loading): leave segment colour only — no crash */
         ctx.restore();
     }
 
