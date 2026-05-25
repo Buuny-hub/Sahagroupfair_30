@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>สหกรุ๊ปแฟร์&เฟส ครั้งที่ 30 – วงล้อโชคดี</title>
+    <title>สหกรุ๊ปแฟร์&เฟส ครั้งที่ 30 – Lucky Spin</title>
 
     <!-- Kanit 900 italic → title | Sriracha → tagline handwriting -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,8 +42,8 @@
             pointer-events: none; z-index: 0;
         }
         @keyframes sun-pulse {
-            0%,100% { transform: scale(1);    opacity:.85; }
-            50%      { transform: scale(1.1);  opacity:1;   }
+            0%,100% { transform: scale(1);   opacity:.85; }
+            50%     { transform: scale(1.1); opacity:1;   }
         }
 
         /* ===== CLOUDS ===== */
@@ -75,33 +75,29 @@
 
         @keyframes drift {
             from { transform: translateX(-130%); }
-            to   { transform: translateX(120vw);  }
+            to   { transform: translateX(120vw); }
         }
 
-        /* ===== BALLOONS ===== */
-        .balloon {
-            position: fixed; bottom:-90px;
-            width:46px; height:60px;
-            border-radius: 50% 50% 50% 50% / 58% 58% 42% 42%;
-            opacity:.82; pointer-events:none; z-index:0;
-            animation: rise linear infinite;
+        /* ===== MASCOTS (replace balloons) ===== */
+        .mascot {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            animation: mascotFloat ease-in-out infinite;
         }
-        .balloon::after {
-            content:''; position:absolute;
-            bottom:-16px; left:50%; transform:translateX(-50%);
-            width:1px; height:18px; background:rgba(0,0,0,.22);
+        @keyframes mascotFloat {
+            0%,100% { transform: translateY(0px)   rotate(-1.2deg); }
+            30%     { transform: translateY(-18px)  rotate(0.4deg);  }
+            60%     { transform: translateY(-26px)  rotate(1.4deg);  }
+            80%     { transform: translateY(-14px)  rotate(-0.3deg); }
         }
-        .b1{background:#FF6B9D;left:4%; animation-duration:10s;animation-delay:0s;}
-        .b2{background:#FFD700;left:14%;animation-duration:13s;animation-delay:2.5s;}
-        .b3{background:#FF6348;left:78%;animation-duration:11s;animation-delay:1s;}
-        .b4{background:#7BED9F;left:88%;animation-duration:15s;animation-delay:4s;}
-        .b5{background:#70A1FF;left:50%;animation-duration:12s;animation-delay:7s;}
-        .b6{background:#FF9F43;left:32%;animation-duration: 9s;animation-delay:5s;}
-        @keyframes rise {
-            from { transform:translateY(0)   rotate(-4deg); opacity:.82; }
-            50%  { transform:translateY(-55vh) rotate(4deg); }
-            to   { transform:translateY(-115vh) rotate(-2deg); opacity:0;  }
-        }
+        /* Main flanking mascots — most visible at left/right edges */
+        .m1 { bottom:0; left:-12px;  width:clamp(115px,14vw,210px); animation-duration:4.3s; animation-delay:0s;    opacity:.88; }
+        .m2 { bottom:0; right:-12px; width:clamp(110px,13vw,195px); animation-duration:5.2s; animation-delay:1.4s;  opacity:.84; }
+        /* Interior mascots — slightly transparent, peek behind content */
+        .m3 { bottom:0; left:18%;    width:clamp(68px, 8vw,125px);  animation-duration:3.9s; animation-delay:2.3s;  opacity:.48; }
+        .m4 { bottom:0; right:18%;   width:clamp(72px, 9vw,135px);  animation-duration:4.6s; animation-delay:0.8s;  opacity:.50; }
+        .m5 { bottom:0; left:44%;    width:clamp(60px, 7vw,110px);  animation-duration:3.5s; animation-delay:1.9s;  opacity:.40; }
 
         /* ===== HEADER (inside left column) ===== */
         .header {
@@ -120,10 +116,8 @@
             font-size: clamp(4.2em, 13vw, 8em);
             line-height: .9;
             color: #E31D0C;
-            /* White stroke to match poster */
             -webkit-text-stroke: clamp(3px, .8vw, 6px) #ffffff;
             paint-order: stroke fill;
-            /* Drop shadow */
             filter: drop-shadow(0 6px 12px rgba(200,20,0,.28));
             letter-spacing: -2px;
         }
@@ -150,7 +144,7 @@
             letter-spacing: -1px;
         }
 
-        /* "ครั้งที่ 30" red circle – matches poster */
+        /* "ครั้งที่ 30" red circle */
         .badge-30 {
             flex-shrink: 0;
             display: inline-flex;
@@ -161,7 +155,7 @@
             height: clamp(60px, 11vw, 88px);
             border-radius: 50%;
             background: radial-gradient(circle at 38% 32%, #ff4c2a, #C9200A 65%);
-            border: clamp(2px,  .5vw, 4px) solid #fff;
+            border: clamp(2px, .5vw, 4px) solid #fff;
             box-shadow: 0 4px 0 rgba(130,15,0,.55), 0 6px 18px rgba(220,30,0,.45);
             font-family: 'Kanit', sans-serif;
             font-style: normal;
@@ -181,7 +175,7 @@
             flex-wrap: wrap;
         }
 
-        /* "ไปด้วยกันนะ" – Sriracha handwriting, italic */
+        /* "ไปด้วยกันนะ" */
         .tagline {
             font-family: 'Sriracha', cursive;
             font-size: clamp(1.8em, 5.5vw, 3.6em);
@@ -192,7 +186,6 @@
             line-height: 1;
             text-shadow: 1px 1px 0 rgba(255,255,255,.7);
         }
-        /* double orange wavy underline from poster */
         .tagline::before {
             content: '';
             position: absolute;
@@ -213,7 +206,7 @@
             opacity: .7;
         }
 
-        /* "25–28" date circle – exactly like poster */
+        /* date circle */
         .date-circle {
             flex-shrink: 0;
             display: flex;
@@ -233,25 +226,38 @@
             padding: 6px;
             text-align: center;
         }
-        .date-num   { font-size: clamp(1.5em, 4vw, 2.5em);  font-weight:900; line-height:1;   }
-        .date-month { font-size: clamp(.72em, 1.8vw, 1.08em); font-weight:700; }
+        .date-num   { font-size: clamp(1.5em, 4vw, 2.5em);   font-weight:900; line-height:1;    }
+        .date-month { font-size: clamp(.72em, 1.8vw, 1.08em); font-weight:700;                  }
         .date-venue { font-size: clamp(.58em, 1.4vw, .85em);  font-weight:700; opacity:.92; line-height:1.15; }
 
-        /* ===== WHEEL TITLE BAR ===== */
-        .wheel-title {
-            display: inline-block;
-            margin-top: clamp(14px, 2.5vw, 22px);
-            padding: clamp(10px,1.8vw,15px) clamp(28px,5vw,56px);
-            font-family: 'Kanit', sans-serif;
-            font-size: clamp(1.2em, 3vw, 1.85em);
-            font-weight: 900;
-            font-style: normal;
-            color: #fff;
+        /* ===== WHEEL GAME TITLE (above wheel in right column) ===== */
+        .wheel-game-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(8px, 1.5vw, 14px);
+            margin-bottom: clamp(8px, 1.4vw, 14px);
             background: linear-gradient(135deg, #ff5030, #C9200A);
+            padding: clamp(8px,1.4vw,14px) clamp(22px,4vw,48px);
             border-radius: 50px;
             box-shadow: 0 5px 0 rgba(120,14,0,.55), 0 8px 22px rgba(220,30,0,.4);
             border: clamp(2px,.5vw,3px) solid rgba(255,255,255,.38);
-            letter-spacing: 2px;
+            position: relative; z-index: 2;
+        }
+        .hisher-logo {
+            height: clamp(26px, 3.8vw, 46px);
+            width: auto;
+            /* invert to white so SVG/dark logo shows on red background */
+            filter: brightness(0) invert(1);
+        }
+        .lucky-spin-text {
+            font-family: 'Kanit', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            font-size: clamp(1.1em, 2.6vw, 1.8em);
+            color: #fff;
+            letter-spacing: 3px;
+            text-shadow: 0 2px 6px rgba(0,0,0,.28);
         }
 
         /* ===== WHEEL AREA ===== */
@@ -357,14 +363,14 @@
             margin-bottom:12px;
         }
         .result-logo-wrap {
-            width:210px; height:152px;
+            width:210px; height:210px;
             display:flex; align-items:center; justify-content:center;
             margin:0 auto 14px;
             background:#f7f7f7; border-radius:16px;
             border:3px solid #FFD700; overflow:hidden;
         }
         .result-logo-wrap img { max-width:100%; max-height:100%; object-fit:contain; }
-        .result-brand-name { font-size:1.5em; font-weight:900; color:#E31D0C; margin-bottom:6px; }
+        .result-brand-name { font-size:1.35em; font-weight:900; color:#E31D0C; margin-bottom:6px; }
         .result-msg { font-size:.94em; color:#555; margin-bottom:20px; font-weight:700; }
         .result-close {
             padding:12px 42px;
@@ -388,7 +394,6 @@
             position: relative;
             z-index: 2;
         }
-
         .col-left {
             flex: 0 0 46%;
             display: flex;
@@ -397,7 +402,6 @@
             justify-content: center;
             padding: 10px 16px;
         }
-
         .col-right {
             flex: 0 0 54%;
             display: flex;
@@ -406,8 +410,6 @@
             justify-content: center;
             padding: 10px 16px;
         }
-
-        /* Header sits inside left column — remove old centering */
         .header {
             width: 100%;
             max-width: 100%;
@@ -433,12 +435,13 @@
 <div class="cloud c2"></div>
 <div class="cloud c3"></div>
 <div class="cloud c4"></div>
-<div class="balloon b1"></div>
-<div class="balloon b2"></div>
-<div class="balloon b3"></div>
-<div class="balloon b4"></div>
-<div class="balloon b5"></div>
-<div class="balloon b6"></div>
+
+<!-- Mascots floating in background (replace balloons) -->
+<img class="mascot m1" src="Mascot_01.png" alt="">
+<img class="mascot m2" src="Mascot_02.png" alt="">
+<img class="mascot m3" src="Mascot_03.png" alt="">
+<img class="mascot m4" src="Mascot_04.png" alt="">
+<img class="mascot m5" src="Mascot_05.png" alt="">
 
 <div class="main-layout">
 
@@ -458,12 +461,18 @@
                     <div class="date-venue">ไบเทค บางนา<br>ฮอลล์ 98–100</div>
                 </div>
             </div>
-            <div class="wheel-title">🎡&ensp;วงล้อโชคดี&ensp;·&ensp;Lucky Wheel&ensp;🎡</div>
         </div>
     </div>
 
     <!-- ===== RIGHT: วงล้อ ===== -->
     <div class="col-right">
+
+        <!-- Game title above the wheel -->
+        <div class="wheel-game-title">
+            <img src="hisher.svg" alt="His&Her Plus Point" class="hisher-logo">
+            <span class="lucky-spin-text">Lucky Spin</span>
+        </div>
+
         <div class="wheel-wrap" id="wheelWrap">
             <div class="outer-ring"  id="outerRing"></div>
             <div class="lights-ring" id="lightsRing"></div>
@@ -477,6 +486,7 @@
             <button id="spinBtn" onclick="spin()">หมุนเลย!&ensp;🎯</button>
             <div id="spinCount">หมุนไปแล้ว: <span id="countNum">0</span> ครั้ง</div>
         </div>
+
     </div>
 
 </div>
@@ -487,30 +497,47 @@
         <div class="result-congrats">🎉 ยินดีด้วย! 🎉</div>
         <div class="result-logo-wrap"><img id="resultImg" src="" alt=""></div>
         <div class="result-brand-name" id="resultBrand"></div>
-        <div class="result-msg">คุณได้รับรางวัลจากแบรนด์นี้!</div>
+        <div class="result-msg">คุณได้รับสินค้าพิเศษ! 🎁</div>
         <button class="result-close" onclick="closeResult()">ปิด&ensp;✕</button>
     </div>
 </div>
 
 <script>
 /* ============================================================
-   BRAND DATA
+   PRODUCT DATA  (10 items, alternating M100 / C100M67K38)
    ============================================================ */
-const BRANDS = [
-    { name:'Wacoal',           file:'Logowacoal-01-scaled.jpg',       c1:'#B31B4E', c2:'#D4547A' },
-    { name:'Guy Laroche',      file:'Logo-Guy-Laroche-Innerwear.jpg', c1:'#2C2C2C', c2:'#555555' },
-    { name:'BSC\nCosmetology', file:'BSC-Cosmetology.jpeg',           c1:'#B0102E', c2:'#D62B4A' },
-    { name:'Enfant',           file:'Logo-Enfant-Blue.jpg',           c1:'#1E2370', c2:'#3840A8' },
-    { name:'Lacoste',          file:'Lacoste_logo.png',               c1:'#155D2F', c2:'#228B45' },
+const PRODUCTS = [
+    'BSC_HoneiV_HYA Serum.png',
+    'BSC_HoneiV_Sunscreen.png',
+    'BSC_Honey Yuzu.png',
+    'Enfant_Wipes extra mild.png',
+    'Sheene_Airy Powder.png',
+    'Sheene_Airy Soft Matte Lip.png',
+    'Sheene_Lip Nude.png',
+    'Sheene_Lip Pink.png',
+    'Sheene_loose powder.png',
+    'Sheene_Powder.png',
 ];
 
-/* 10 segments, each brand ×2, interleaved */
-const SEG_ORDER = [0,2,4,1,3, 0,2,4,1,3];
-const segments  = SEG_ORDER.map(i => BRANDS[i]);
-const N   = segments.length;
+/* M100 = #EC008C  |  C100M67K38 = #00349E */
+const SEG_COLORS = ['#EC008C', '#00349E'];
+
+function fileToName(f) {
+    return f.replace(/\.png$/i, '').replace(/_/g, ' ');
+}
+
+const segments = PRODUCTS.map((file, i) => ({
+    file,
+    name:  fileToName(file),
+    color: SEG_COLORS[i % 2],
+}));
+
+const N   = segments.length;   // 10
 const ARC = (2 * Math.PI) / N;
 
-/* Canvas — fit inside right column (54% of viewport, capped by height) */
+/* ============================================================
+   CANVAS SETUP
+   ============================================================ */
 const SIZE = Math.min(
     Math.floor(window.innerWidth * 0.50) - 60,
     Math.floor(window.innerHeight * 0.82),
@@ -519,11 +546,11 @@ const SIZE = Math.min(
 const canvas = document.getElementById('wheelCanvas');
 canvas.width = canvas.height = SIZE;
 const ctx = canvas.getContext('2d');
-const CX = SIZE/2, CY = SIZE/2, R = CX - 4;
+const CX = SIZE / 2, CY = SIZE / 2, R = CX - 4;
 
 /* Outer ring sizing */
-const outerRing = document.getElementById('outerRing');
-outerRing.style.cssText +=
+const outerRingEl = document.getElementById('outerRing');
+outerRingEl.style.cssText +=
     `width:${SIZE+28}px;height:${SIZE+28}px;left:-14px;top:-14px;`;
 
 /* Bulb lights */
@@ -539,84 +566,89 @@ for (let i = 0; i < 24; i++) {
     const sz = 11;
     dot.style.cssText =
         `width:${sz}px;height:${sz}px;` +
-        `left:${LR + LR*Math.cos(a) - sz/2}px;` +
-        `top:${LR  + LR*Math.sin(a) - sz/2}px;` +
-        `background:${LIGHT_COLORS[i%LIGHT_COLORS.length]};` +
-        `color:${LIGHT_COLORS[i%LIGHT_COLORS.length]};` +
-        `animation-delay:${(i*0.04).toFixed(2)}s;`;
+        `left:${LR + LR * Math.cos(a) - sz/2}px;` +
+        `top:${LR  + LR * Math.sin(a) - sz/2}px;` +
+        `background:${LIGHT_COLORS[i % LIGHT_COLORS.length]};` +
+        `color:${LIGHT_COLORS[i % LIGHT_COLORS.length]};` +
+        `animation-delay:${(i * 0.04).toFixed(2)}s;`;
     lightsRing.appendChild(dot);
 }
 
-/* Image cache */
+/* Image cache — key by filename */
 const imgCache = {};
-BRANDS.forEach(b => {
+PRODUCTS.forEach(file => {
     const img = new Image();
-    img.src = b.file;
-    img.onload  = () => { imgCache[b.name] = img;  drawWheel(); };
-    img.onerror = () => { imgCache[b.name] = null; drawWheel(); };
+    img.src = file;
+    img.onload  = () => { imgCache[file] = img;  drawWheel(); };
+    img.onerror = () => { imgCache[file] = null; drawWheel(); };
 });
 
 /* ============================================================
    DRAW
    ============================================================ */
-let angle = -Math.PI/2 - ARC/2;
+let angle = -Math.PI / 2 - ARC / 2;
 
 function drawWheel() {
     ctx.clearRect(0, 0, SIZE, SIZE);
 
     /* gold outer border */
-    ctx.beginPath(); ctx.arc(CX,CY,R+4,0,Math.PI*2);
-    ctx.fillStyle='#FFD700'; ctx.fill();
+    ctx.beginPath(); ctx.arc(CX, CY, R + 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#FFD700'; ctx.fill();
 
-    ctx.beginPath(); ctx.arc(CX,CY,R+1,0,Math.PI*2);
-    ctx.fillStyle='#fff'; ctx.fill();
+    ctx.beginPath(); ctx.arc(CX, CY, R + 1, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff'; ctx.fill();
 
     for (let i = 0; i < N; i++) {
         const seg   = segments[i];
         const start = angle + i * ARC;
         const end   = start + ARC;
         const mid   = start + ARC / 2;
-        const fill  = i % 2 === 0 ? seg.c1 : seg.c2;
 
-        /* slice */
-        ctx.beginPath(); ctx.moveTo(CX,CY);
-        ctx.arc(CX,CY,R,start,end); ctx.closePath();
-        ctx.fillStyle = fill; ctx.fill();
-        ctx.strokeStyle = 'rgba(255,255,255,.5)';
-        ctx.lineWidth = 1.5; ctx.stroke();
+        /* segment slice — alternating M100 / C100M67K38 */
+        ctx.beginPath(); ctx.moveTo(CX, CY);
+        ctx.arc(CX, CY, R, start, end); ctx.closePath();
+        ctx.fillStyle   = seg.color; ctx.fill();
+        ctx.strokeStyle = 'rgba(255,255,255,.55)';
+        ctx.lineWidth   = 1.5; ctx.stroke();
 
-        /* logo */
-        const lr = R * 0.60;
-        const lx = CX + lr * Math.cos(mid);
-        const ly = CY + lr * Math.sin(mid);
-        const logoSz = SIZE * 0.125;
+        /* product image — large & clear, no circle clip */
+        const lr     = R * 0.62;
+        const lx     = CX + lr * Math.cos(mid);
+        const ly     = CY + lr * Math.sin(mid);
+        const logoSz = SIZE * 0.20;   // bigger than old logo size
 
         ctx.save();
         ctx.translate(lx, ly);
         ctx.rotate(mid + Math.PI / 2);
 
-        const img = imgCache[seg.name];
+        const img = imgCache[seg.file];
         if (img) {
-            /* white circle bg */
-            ctx.beginPath(); ctx.arc(0,0,logoSz/2+6,0,Math.PI*2);
-            ctx.fillStyle='#fff';
-            ctx.shadowColor='rgba(0,0,0,.15)'; ctx.shadowBlur=6;
-            ctx.fill(); ctx.shadowBlur=0;
-            /* clipped image */
-            ctx.save();
-            ctx.beginPath(); ctx.arc(0,0,logoSz/2,0,Math.PI*2); ctx.clip();
-            ctx.drawImage(img,-logoSz/2,-logoSz/2,logoSz,logoSz);
-            ctx.restore();
+            /* contain scaling — preserve aspect ratio */
+            const ar = img.naturalWidth / img.naturalHeight;
+            let drawW, drawH;
+            if (ar >= 1) { drawW = logoSz; drawH = logoSz / ar; }
+            else         { drawH = logoSz; drawW = logoSz * ar; }
+
+            /* subtle drop-shadow for depth */
+            ctx.shadowColor    = 'rgba(0,0,0,.30)';
+            ctx.shadowBlur     = 8;
+            ctx.shadowOffsetX  = 0;
+            ctx.shadowOffsetY  = 3;
+            ctx.drawImage(img, -drawW / 2, -drawH / 2, drawW, drawH);
+            ctx.shadowColor    = 'transparent';
+            ctx.shadowBlur     = 0;
         } else {
-            ctx.fillStyle='rgba(255,255,255,.18)';
-            ctx.beginPath(); ctx.arc(0,0,logoSz/2+6,0,Math.PI*2); ctx.fill();
-            ctx.fillStyle='#fff';
-            ctx.font=`bold ${SIZE*.026}px 'Kanit',sans-serif`;
-            ctx.textAlign='center'; ctx.textBaseline='middle';
-            const lines = seg.name.split('\n');
-            const lh = SIZE * .03;
-            lines.forEach((line,li) =>
-                ctx.fillText(line, 0, (li-(lines.length-1)/2)*lh)
+            /* fallback: semi-transparent circle + product name */
+            ctx.fillStyle = 'rgba(255,255,255,.22)';
+            ctx.beginPath(); ctx.arc(0, 0, logoSz / 2, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.font = `bold ${SIZE * .022}px 'Kanit',sans-serif`;
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            const words = seg.name.split(' ');
+            const show  = words.slice(0, 2);
+            const lh    = SIZE * .028;
+            show.forEach((w, j) =>
+                ctx.fillText(w, 0, (j - (show.length - 1) / 2) * lh)
             );
         }
         ctx.restore();
@@ -624,18 +656,18 @@ function drawWheel() {
 
     /* centre hub */
     const hubR = SIZE * 0.075;
-    const g = ctx.createRadialGradient(CX,CY,0,CX,CY,hubR);
+    const g = ctx.createRadialGradient(CX, CY, 0, CX, CY, hubR);
     g.addColorStop(0,  '#fff');
     g.addColorStop(.3, '#FFD700');
     g.addColorStop(.7, '#FF6348');
     g.addColorStop(1,  '#E31D0C');
-    ctx.beginPath(); ctx.arc(CX,CY,hubR,0,Math.PI*2);
-    ctx.fillStyle=g;
-    ctx.shadowColor='rgba(0,0,0,.3)'; ctx.shadowBlur=12;
-    ctx.fill(); ctx.shadowBlur=0;
-    ctx.strokeStyle='#fff'; ctx.lineWidth=3; ctx.stroke();
-    ctx.beginPath(); ctx.arc(CX,CY,hubR*.42,0,Math.PI*2);
-    ctx.fillStyle='rgba(255,255,255,.65)'; ctx.fill();
+    ctx.beginPath(); ctx.arc(CX, CY, hubR, 0, Math.PI * 2);
+    ctx.fillStyle = g;
+    ctx.shadowColor = 'rgba(0,0,0,.3)'; ctx.shadowBlur = 12;
+    ctx.fill(); ctx.shadowBlur = 0;
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.stroke();
+    ctx.beginPath(); ctx.arc(CX, CY, hubR * .42, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,255,255,.65)'; ctx.fill();
 }
 
 drawWheel();
@@ -650,17 +682,17 @@ function spin() {
     spinning = true;
     document.getElementById('spinBtn').disabled = true;
 
-    const targetSeg  = Math.floor(Math.random() * N);
-    const extraRot   = (6 + Math.floor(Math.random() * 5)) * Math.PI * 2;
-    const targetAng  = -(targetSeg * ARC + ARC / 2);
-    const startAng   = angle;
-    const endAng     = startAng - ((startAng - targetAng) % (Math.PI*2)) - extraRot;
-    const duration   = 5800;
-    const t0         = performance.now();
+    const targetSeg = Math.floor(Math.random() * N);
+    const extraRot  = (6 + Math.floor(Math.random() * 5)) * Math.PI * 2;
+    const targetAng = -(targetSeg * ARC + ARC / 2);
+    const startAng  = angle;
+    const endAng    = startAng - ((startAng - targetAng) % (Math.PI * 2)) - extraRot;
+    const duration  = 5800;
+    const t0        = performance.now();
 
     function tick(t) {
-        const p = Math.min((t-t0)/duration, 1);
-        const e = 1 - Math.pow(1-p, 5);
+        const p = Math.min((t - t0) / duration, 1);
+        const e = 1 - Math.pow(1 - p, 5);
         angle = startAng + (endAng - startAng) * e;
         drawWheel();
         if (p < 1) { requestAnimationFrame(tick); }
@@ -679,12 +711,11 @@ function spin() {
    RESULT
    ============================================================ */
 function showResult(seg) {
-    const brandObj = BRANDS.find(b => b.name === seg.name);
-    const img = imgCache[seg.name];
+    const img = imgCache[seg.file];
     const ri  = document.getElementById('resultImg');
-    if (img && brandObj) { ri.src=brandObj.file; ri.style.display='block'; }
-    else                  { ri.style.display='none'; }
-    document.getElementById('resultBrand').textContent = seg.name.replace('\n',' ');
+    if (img) { ri.src = seg.file; ri.style.display = 'block'; }
+    else      { ri.style.display = 'none'; }
+    document.getElementById('resultBrand').textContent = seg.name;
     document.getElementById('resultOverlay').classList.add('show');
     launchConfetti();
 }
@@ -696,13 +727,16 @@ function closeResult() {
    CONFETTI
    ============================================================ */
 function launchConfetti() {
-    const colors=['#FF6348','#FFD700','#7BED9F','#70A1FF','#FF6B9D','#fff','#E31D0C','#FFA502'];
-    for (let i=0;i<160;i++) {
-        setTimeout(()=>{
-            const el=document.createElement('div');
-            el.className='confetti-piece';
-            const sz=6+Math.random()*10;
-            el.style.cssText=
+    const colors = [
+        '#FF6348','#FFD700','#7BED9F','#70A1FF','#FF6B9D',
+        '#fff','#E31D0C','#FFA502','#EC008C','#00349E'
+    ];
+    for (let i = 0; i < 160; i++) {
+        setTimeout(() => {
+            const el = document.createElement('div');
+            el.className = 'confetti-piece';
+            const sz = 6 + Math.random() * 10;
+            el.style.cssText =
                 `left:${Math.random()*100}vw;` +
                 `width:${sz}px;height:${sz}px;` +
                 `background:${colors[Math.floor(Math.random()*colors.length)]};` +
@@ -710,8 +744,8 @@ function launchConfetti() {
                 `animation-duration:${1.4+Math.random()*2.4}s;` +
                 `animation-delay:${Math.random()*.5}s;`;
             document.body.appendChild(el);
-            setTimeout(()=>el.remove(), 4500);
-        }, i*14);
+            setTimeout(() => el.remove(), 4500);
+        }, i * 14);
     }
 }
 </script>
