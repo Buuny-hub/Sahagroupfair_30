@@ -384,23 +384,21 @@ const MEMBER_ID = sessionStorage.getItem('memberId') || 'guest';
    PRODUCT DATA  (10 segments, alternating M100 / C100M67K38)
 ════════════════════════════════════════════════════════════ */
 const PRODUCTS = [
-    'HONEI V BSC HYA ROYAL HONEY SERUM.png',
-    'HONEI V BSC AGE DEFENCE SUNSCREEN.png',
-    'HONEI V BSC HONEY YUZU WHIP FOAM.png',
-    'ENFANT Extra Mild Face & Body Wipes .png',
-    'SHEENE AIRY POWDER 3.5 กรัม.png',
-    'SHEENE AIRY POWDER 6 กรัม.png',
-    'SHEENE AIRY LIP TINT GLOSS.png',
-    'SHEENE AIRY MATTE LIP.png',
-    'SHEENE LIP GLOSS.png',
-    'SHEENE OIL FREE CAKE POWDER.png',
+    { file: 'HONEI V BSC HYA ROYAL HONEY SERUM.png',    name: 'HONEI V BSC HYA Royal Honey Serum' },
+    { file: 'HONEI V BSC AGE DEFENCE SUNSCREEN.png',    name: 'HONEI V BSC Age Defence Sunscreen' },
+    { file: 'HONEI V BSC HONEY YUZU WHIP FOAM.png',     name: 'HONEI V BSC Honey Yuzu Whip Foam' },
+    { file: 'ENFANT Extra Mild Face & Body Wipes .png', name: 'ENFANT Extra Mild Face & Body Wipes' },
+    { file: 'SHEENE AIRY POWDER 3.5 กรัม.png',          name: 'SHEENE Airy Powder 3.5 กรัม' },
+    { file: 'SHEENE AIRY POWDER 6 กรัม.png',            name: 'SHEENE Airy Powder 6 กรัม' },
+    { file: 'SHEENE AIRY LIP TINT GLOSS.png',          name: 'SHEENE Airy Lip Tint Gloss' },
+    { file: 'SHEENE AIRY MATTE LIP.png',                name: 'SHEENE Airy Matte Lip' },
+    { file: 'SHEENE LIP GLOSS.png',                     name: 'SHEENE Lip Gloss' },
+    { file: 'SHEENE OIL FREE CAKE POWDER.png',          name: 'SHEENE Oil Free Cake Powder' },
+    { file: 'Good Age Diapers .png',                    name: 'GoodAge กู๊ดเอจ Adult Diapers' },
 ];
 const SEG_COLORS = ['#EC008C', '#00349E'];   // M100 | C100M67K38
 
-/* strip extension and trim (filenames are already human-readable) */
-function fileToName(f){ return f.replace(/\.png$/i,'').trim(); }
-
-const segments = PRODUCTS.map((file,i)=>({ file, name:fileToName(file), color:SEG_COLORS[i%2] }));
+const segments = PRODUCTS.map((p,i)=>({ file: p.file, name: p.name, color: SEG_COLORS[i%2] }));
 const N   = segments.length;
 const ARC = (2*Math.PI)/N;
 
@@ -436,11 +434,11 @@ for(let i=0;i<24;i++){
 
 /* ── Image cache ── */
 const imgCache = {};
-PRODUCTS.forEach(file=>{
+PRODUCTS.forEach(p=>{
     const img=new Image();
-    img.src=file;
-    img.onload =()=>{ imgCache[file]=img;  drawWheel(); };
-    img.onerror=()=>{ imgCache[file]=null; drawWheel(); };
+    img.src=p.file;
+    img.onload =()=>{ imgCache[p.file]=img;  drawWheel(); };
+    img.onerror=()=>{ imgCache[p.file]=null; drawWheel(); };
 });
 
 /* ── Hub (center) mascot ── */
