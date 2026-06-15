@@ -139,6 +139,7 @@ app.get('/admin', (req, res) => {
 <title>Admin – สหกรุ๊ปแฟร์ 30</title>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
+  html{filter:saturate(0.7)}/* ช่วงไว้อาลัย */
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:'Kanit',sans-serif;background:#f0f6ff;padding:24px}
   header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px}
